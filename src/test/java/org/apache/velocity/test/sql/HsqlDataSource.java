@@ -19,13 +19,14 @@ package org.apache.velocity.test.sql;
  * under the License.    
  */
 
+import javax.sql.DataSource;
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 import org.hsqldb.jdbcDriver;
 
 public class HsqlDataSource implements DataSource {
@@ -74,4 +75,9 @@ public class HsqlDataSource implements DataSource {
 	throw new SQLException("Not implemented");
     }
 
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException
+    {
+        return null;
+    }
 }
