@@ -30,7 +30,6 @@ import junit.framework.TestSuite;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.util.introspection.IntrospectorCacheImpl;
 
 /**
@@ -39,7 +38,7 @@ import org.apache.velocity.util.introspection.IntrospectorCacheImpl;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @version $Id: ClassloaderChangeTestCase.java 680817 2008-07-29 19:49:41Z nbubna $
  */
-public class ClassloaderChangeTestCase extends TestCase implements LogChute
+public class ClassloaderChangeTestCase extends TestCase
 {
     private VelocityEngine ve = null;
     private boolean sawCacheDump = false;

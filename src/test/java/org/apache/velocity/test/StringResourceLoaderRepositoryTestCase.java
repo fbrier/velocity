@@ -28,7 +28,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeSingleton;
-import org.apache.velocity.runtime.log.SystemLogChute;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl;
@@ -53,7 +52,7 @@ public class StringResourceLoaderRepositoryTestCase extends TestCase
         Velocity.setProperty(Velocity.RESOURCE_LOADER, "string");
         Velocity.addProperty("string.resource.loader.class", StringResourceLoader.class.getName());
         Velocity.addProperty("string.resource.loader.modificationCheckInterval", "1");
-        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, SystemLogChute.class.getName());
+//        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, SystemLogChute.class.getName());
         Velocity.init();
 
         StringResourceRepository repo = getRepo(null, null);
@@ -87,7 +86,7 @@ public class StringResourceLoaderRepositoryTestCase extends TestCase
             engine.addProperty("string.resource.loader.repository.static", "false");
         }
         engine.addProperty("string.resource.loader.modificationCheckInterval", "1");
-        engine.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, SystemLogChute.class.getName());
+//        engine.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, SystemLogChute.class.getName());
         return engine;
     }
 

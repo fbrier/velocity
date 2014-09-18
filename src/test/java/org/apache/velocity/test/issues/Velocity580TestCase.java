@@ -24,7 +24,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.test.BaseTestCase;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Test Case for <a href="https://issues.apache.org/jira/browse/VELOCITY-580">Velocity Issue 580</a>.
@@ -77,7 +76,7 @@ public class Velocity580TestCase extends BaseTestCase
         
         engine.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, TEMPLATE_DIR);
 
-        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }

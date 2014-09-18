@@ -30,9 +30,7 @@ import junit.framework.TestSuite;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeSingleton;
-import org.apache.velocity.test.misc.TestLogChute;
 import org.apache.velocity.runtime.resource.loader.FileResourceLoader;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
@@ -75,8 +73,6 @@ public class ResourceLoaderInstanceTestCase extends BaseTestCase
      */
     private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/resourceinstance/compare";
 
-    private TestLogChute logger = new TestLogChute();
-
     /**
      * Default constructor.
      */
@@ -97,8 +93,7 @@ public class ResourceLoaderInstanceTestCase extends BaseTestCase
         Velocity.setProperty( "testrl.resource.loader.path", FILE_RESOURCE_LOADER_PATH );
 
         // actual instance of logger
-        logger.on();
-        Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, logger);
+//        Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, logger);
         Velocity.setProperty("runtime.log.logsystem.test.level", "debug");
 
         Velocity.init();
@@ -143,7 +138,7 @@ System.out.println("All needed files exist");
 }
 catch (Exception e)
 {
-    System.out.println("Log was: "+logger.getLog());
+//    System.out.println("Log was: "+logger.getLog());
     System.out.println(e);
     e.printStackTrace();
 }
@@ -161,7 +156,7 @@ catch (Exception e)
             
 //caveman hack to get gump to give more info
 System.out.println(msg);
-System.out.println("Log was: "+logger.getLog());
+//System.out.println("Log was: "+logger.getLog());
             fail(msg);
         }
     }

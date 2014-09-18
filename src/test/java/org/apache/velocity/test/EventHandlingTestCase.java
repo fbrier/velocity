@@ -36,7 +36,6 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.util.ContextAware;
 import org.apache.velocity.util.RuntimeServicesAware;
 
@@ -47,9 +46,7 @@ import org.apache.velocity.util.RuntimeServicesAware;
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @version $Id: EventHandlingTestCase.java 463298 2006-10-12 16:10:32Z henning $
  */
-public class EventHandlingTestCase
-        extends TestCase
-        implements LogChute
+public class EventHandlingTestCase extends TestCase
 {
     private static String NO_REFERENCE_VALUE =  "<no reference value>";
     private static String REFERENCE_VALUE =  "<reference value>";
@@ -135,7 +132,7 @@ public class EventHandlingTestCase
     /**
      * Test all the event handlers using the given engine.
      * @param ve
-     * @param vcontext
+     * @param vc
      */
     private void doTestReferenceInsertionEventHandler1(VelocityEngine ve, VelocityContext vc)
             throws Exception

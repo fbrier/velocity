@@ -20,15 +20,14 @@ package org.apache.velocity.test;
  */
 
 import java.io.StringWriter;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.test.misc.TestLogChute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tests if we can hand Velocity an arbitrary class for logging.
@@ -38,6 +37,8 @@ import org.apache.velocity.test.misc.TestLogChute;
  */
 public class MethodInvocationExceptionTestCase extends TestCase
 {
+    Logger logger = LoggerFactory.getLogger( MethodInvocationExceptionTestCase.class );
+
     protected boolean DEBUG = false;
 
     /**
@@ -56,8 +57,7 @@ public class MethodInvocationExceptionTestCase extends TestCase
          *  init() Runtime with defaults
          */
 
-        Velocity.setProperty(
-                Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         Velocity.init();
     }
@@ -69,7 +69,7 @@ public class MethodInvocationExceptionTestCase extends TestCase
 
     protected void log(String out)
     {
-        Velocity.getLog().debug(out);
+        logger.debug( out );
         if (DEBUG)
         {
             System.out.println(out);

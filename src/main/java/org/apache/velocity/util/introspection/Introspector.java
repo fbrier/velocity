@@ -20,10 +20,9 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.lang.reflect.Method;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.velocity.runtime.RuntimeLogger;
-import org.apache.velocity.runtime.log.Log;
-import org.apache.velocity.runtime.log.RuntimeLoggerLog;
 
 /**
  * This basic function of this class is to return a Method
@@ -56,23 +55,7 @@ import org.apache.velocity.runtime.log.RuntimeLoggerLog;
  */
 public class Introspector extends IntrospectorBase
 {
-    /**
-     * @param log A Log object to use for the introspector.
-     * @since 1.5
-     */
-    public Introspector(final Log log)
-    {
-        super(log);
-    }
-
-    /**
-     * @param logger A runtime logger object.
-     * @deprecated RuntimeLogger is deprecated. Use Introspector(Log log).
-     */
-    public Introspector(final RuntimeLogger logger)
-    {
-        this(new RuntimeLoggerLog(logger));
-    }
+    Logger logger = LoggerFactory.getLogger( Introspector.class );
 
     /**
      * Gets the method defined by <code>name</code> and
@@ -123,7 +106,7 @@ public class Introspector extends IntrospectorBase
             msg.append(") for class ")
                     .append(c);
 
-            log.debug(msg.toString());
+            logger.debug(msg.toString());
         }
 
         return null;

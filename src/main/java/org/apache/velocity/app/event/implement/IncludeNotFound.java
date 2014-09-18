@@ -25,6 +25,8 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.util.ContextAware;
 import org.apache.velocity.util.RuntimeServicesAware;
 import org.apache.velocity.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Simple event handler that checks to see if an included page is available.
@@ -49,7 +51,9 @@ import org.apache.velocity.util.StringUtils;
  * @version $Id: IncludeNotFound.java 809816 2009-09-01 05:14:27Z nbubna $
  * @since 1.5
  */
-public class IncludeNotFound implements IncludeEventHandler,RuntimeServicesAware,ContextAware {
+public class IncludeNotFound implements IncludeEventHandler,RuntimeServicesAware,ContextAware
+{
+    Logger logger = LoggerFactory.getLogger( IncludeNotFound.class );
 
     private static final String DEFAULT_NOT_FOUND = "notfound.vm";
     private static final String PROPERTY_NOT_FOUND = "eventhandler.include.notfound";
@@ -89,7 +93,7 @@ public class IncludeNotFound implements IncludeEventHandler,RuntimeServicesAware
                 /**
                  * can't find not found, so display nothing
                  */
-                rs.getLog().error("Can't find include not found page: " + notfound);
+                logger.error( "Can't find include not found page: " + notfound );
                 return null;
             }
         }

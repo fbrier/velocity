@@ -25,6 +25,8 @@ import org.apache.velocity.app.event.ReferenceInsertionEventHandler;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.util.RuntimeServicesAware;
 import org.apache.velocity.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for escaping references.  To use it, override the following methods:
@@ -55,8 +57,9 @@ import org.apache.velocity.util.StringUtils;
  * @version $Id: EscapeReference.java 685685 2008-08-13 21:43:27Z nbubna $
  * @since 1.5
  */
-public abstract class EscapeReference implements ReferenceInsertionEventHandler,RuntimeServicesAware {
-
+public abstract class EscapeReference implements ReferenceInsertionEventHandler,RuntimeServicesAware
+{
+    Logger logger = LoggerFactory.getLogger( EscapeReference.class );
 
     private Perl5Util perl = new Perl5Util();
 
@@ -142,8 +145,8 @@ public abstract class EscapeReference implements ReferenceInsertionEventHandler,
             }
             catch (MalformedPerl5PatternException E)
             {
-                rs.getLog().error("Invalid regular expression '" + matchRegExp
-                                  + "'.  No escaping will be performed.", E);
+                logger.error( "Invalid regular expression '" + matchRegExp
+                        + "'.  No escaping will be performed.", E );
                 matchRegExp = null;
             }
         }

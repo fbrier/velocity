@@ -103,8 +103,8 @@ public class ArrayMethodsTestCase extends BaseTestCase
             context.remove("setme");
         }
 
-        info("Changing to an array of: " + array.getClass().getComponentType());
-        info("Changing setme to: " + setme);
+        logger.info("Changing to an array of: " + array.getClass().getComponentType());
+        logger.info("Changing setme to: " + setme);
 
         int size = Array.getLength(array);
         checkResult("size()", String.valueOf(size), compareToList);
@@ -175,10 +175,10 @@ public class ArrayMethodsTestCase extends BaseTestCase
             assertEquals(result, listResult);
         }
 
-        info("    <$!array."+method+"> resolved to <"+result+">");
+        logger.info("    <$!array."+method+"> resolved to <"+result+">");
         if (compareToList)
         {
-            info("    <$!list."+method+"> resolved to "+listResult+">");
+            logger.info("    <$!list."+method+"> resolved to "+listResult+">");
         }
     }
 

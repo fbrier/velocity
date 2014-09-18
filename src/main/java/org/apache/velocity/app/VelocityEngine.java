@@ -27,7 +27,6 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Properties;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
@@ -36,7 +35,9 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
-import org.apache.velocity.runtime.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * <p>
@@ -57,6 +58,8 @@ import org.apache.velocity.runtime.log.Log;
  */
 public class VelocityEngine implements RuntimeConstants
 {
+    Logger logger = LoggerFactory.getLogger( VelocityEngine.class );
+
     private RuntimeInstance ri = new RuntimeInstance();
 
     /**
@@ -346,7 +349,7 @@ public class VelocityEngine implements RuntimeConstants
         {
             String msg = "VelocityEngine.mergeTemplate() was unable to load template '"
                            + templateName + "'";
-            getLog().error(msg);
+            logger.error( msg );
             throw new ResourceNotFoundException(msg);
         }
         else
@@ -422,54 +425,6 @@ public class VelocityEngine implements RuntimeConstants
     public boolean templateExists(String resourceName)
     {
         return resourceExists(resourceName);
-    }
-
-
-    /**
-     * Returns a convenient Log instance that wraps the current LogChute.
-     * Use this to log error messages. It has the usual methods you'd expect.
-     * @return A log object.
-     * @since 1.5
-     */
-    public Log getLog()
-    {
-        return ri.getLog();
-    }
-
-    /**
-     * @param message
-     * @deprecated Use getLog() and call warn() on it.
-     */
-    public void warn(Object message)
-    {
-        getLog().warn(message);
-    }
-
-    /**
-     * @param message
-     * @deprecated Use getLog() and call warn() on it.
-     */
-    public void info(Object message)
-    {
-        getLog().info(message);
-    }
-
-    /**
-     * @param message
-     * @deprecated Use getLog() and call warn() on it.
-     */
-    public void error(Object message)
-    {
-        getLog().error(message);
-    }
-
-    /**
-     * @param message
-     * @deprecated Use getLog() and call warn() on it.
-     */
-    public void debug(Object message)
-    {
-        getLog().debug(message);
     }
 
     /**

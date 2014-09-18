@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Properties;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
@@ -35,7 +34,8 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeSingleton;
-import org.apache.velocity.runtime.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides  services to the application
@@ -65,6 +65,8 @@ import org.apache.velocity.runtime.log.Log;
  */
 public class Velocity implements RuntimeConstants
 {
+    Logger logger = LoggerFactory.getLogger( Velocity.class );
+
     /**
      *  initialize the Velocity runtime engine, using the default
      *  properties of the Velocity distribution
@@ -200,7 +202,7 @@ public class Velocity implements RuntimeConstants
      * @throws ParseErrorException The template could not be parsed.
      * @throws MethodInvocationException A method on a context object could not be invoked.
      * @throws ResourceNotFoundException A referenced resource could not be loaded.
-     * @throws IOException While loading a reference, an I/O problem occured.
+     * @throws java.io.IOException While loading a reference, an I/O problem occured.
      */
     public static boolean evaluate( Context context, Writer writer,
                                     String logTag, InputStream instream )
@@ -331,7 +333,7 @@ public class Velocity implements RuntimeConstants
         {
             String msg = "Velocity.mergeTemplate() was unable to load template '"
                            + templateName + "'";
-            getLog().error(msg);
+            LoggerFactory.getLogger( Velocity.class ).error( msg );
             throw new ResourceNotFoundException(msg);
         }
         else
@@ -395,58 +397,6 @@ public class Velocity implements RuntimeConstants
     public static boolean resourceExists(String resourceName)
     {
         return (RuntimeSingleton.getLoaderNameForResource(resourceName) != null);
-    }
-
-    /**
-     * Returns a convenient Log instance that wraps the current LogChute.
-     * Use this to log error messages. It has the usual methods.
-     *
-     * @return A convenience Log instance that wraps the current LogChute.
-     * @since 1.5
-     */
-    public static Log getLog()
-    {
-        return RuntimeSingleton.getLog();
-    }
-
-    /**
-     * @deprecated Use getLog() and call warn() on it.
-     * @see Log#warn(Object)
-     * @param message The message to log.
-     */
-    public static void warn(Object message)
-    {
-        getLog().warn( message );
-    }
-
-    /**
-     * @deprecated Use getLog() and call info() on it.
-     * @see Log#info(Object)
-     * @param message The message to log.
-     */
-    public static void info(Object message)
-    {
-        getLog().info( message );
-    }
-
-    /**
-     * @deprecated Use getLog() and call error() on it.
-     * @see Log#error(Object)
-     * @param message The message to log.
-     */
-    public static void error(Object message)
-    {
-        getLog().error( message );
-    }
-
-    /**
-     * @deprecated Use getLog() and call debug() on it.
-     * @see Log#debug(Object)
-     * @param message The message to log.
-     */
-    public static void debug(Object message)
-    {
-        getLog().debug( message );
     }
 
     /**

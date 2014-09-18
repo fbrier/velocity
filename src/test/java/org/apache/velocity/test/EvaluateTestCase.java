@@ -256,7 +256,7 @@ public class EvaluateTestCase extends BaseTestCase
     private void testFile(String basefilename, Map properties)
     throws Exception
     {
-        info("Test file: "+basefilename);
+        logger.info("Test file: "+basefilename);
         VelocityEngine ve = engine;
         ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
      
@@ -265,7 +265,7 @@ public class EvaluateTestCase extends BaseTestCase
             String key = (String) i.next();
             String value = (String) properties.get(key);
             ve.addProperty(key, value);
-            info("Add property: "+key+" = "+value);
+            logger.info("Add property: "+key+" = "+value);
         }
         
         ve.init();

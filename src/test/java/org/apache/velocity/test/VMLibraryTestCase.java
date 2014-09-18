@@ -34,7 +34,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Macro library inclution via the Template.merge method is tested using this
@@ -76,8 +75,7 @@ public class VMLibraryTestCase extends BaseTestCase
          */
         ve1.setProperty("file.resource.loader.cache", Boolean.TRUE);
 
-        ve1.setProperty(
-                Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        ve1.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
@@ -95,8 +93,7 @@ public class VMLibraryTestCase extends BaseTestCase
          */
         ve2.setProperty("file.resource.loader.cache", Boolean.FALSE);
 
-        ve2.setProperty(
-                Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        ve2.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         ve2.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         ve2.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,

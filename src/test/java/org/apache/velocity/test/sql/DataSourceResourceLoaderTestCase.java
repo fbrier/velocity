@@ -19,24 +19,19 @@ package org.apache.velocity.test.sql;
  * under the License.    
  */
 
+import javax.sql.DataSource;
+
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-
-import javax.sql.DataSource;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.DataSourceResourceLoader;
-import org.apache.velocity.test.misc.TestLogChute;
 
 
 public class DataSourceResourceLoaderTestCase
@@ -114,8 +109,7 @@ public class DataSourceResourceLoaderTestCase
         engine.setProperty( "ds.resource.loader.resource.templatecolumn",  "def");
         engine.setProperty( "ds.resource.loader.resource.timestampcolumn", "timestamp");
 
-        Velocity.setProperty(
-                RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        Velocity.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }

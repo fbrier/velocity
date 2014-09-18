@@ -22,22 +22,22 @@ package org.apache.velocity.test.issues;
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.security.Permission;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeInstance;
-import org.apache.velocity.test.misc.TestLogChute;
 import org.apache.velocity.test.BaseTestCase;
 import org.apache.velocity.util.introspection.Introspector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test Case for <a href="https://issues.apache.org/jira/browse/VELTOOLS-66">Velocity Tools Issue 66</a>.
  */
-public class VelTools66TestCase
-        extends BaseTestCase
+public class VelTools66TestCase extends BaseTestCase
 {
+    Logger logger = LoggerFactory.getLogger( VelTools66TestCase.class );
+
     protected static boolean DEBUG = false;
 
     public VelTools66TestCase(final String name)
@@ -54,21 +54,11 @@ public class VelTools66TestCase
     public void setUp()
             throws Exception
     {
-        Velocity.setProperty(
-                Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         Velocity.init();
         System.setSecurityManager(new TestSecurityManager());
 
-    }
-
-    protected static void log(String out)
-    {
-        Velocity.getLog().debug(out);
-        if (DEBUG)
-        {
-            System.out.println(out);
-        }
     }
 
     public void tearDown()
@@ -119,6 +109,7 @@ public class VelTools66TestCase
 
     public static final class TestSecurityManager extends SecurityManager
     {
+        Logger logger = LoggerFactory.getLogger( TestSecurityManager.class );
         private final Class clazz = TestObject.class;
 
         public TestSecurityManager()
@@ -128,7 +119,7 @@ public class VelTools66TestCase
 
         public void checkMemberAccess(final Class c, final int i)
         {
-            log("checkMemberAccess(" + c.getName() + ", " + i + ")");
+            LoggerFactory.getLogger( VelTools66TestCase.class ).debug("checkMemberAccess(" + c.getName() + ", " + i + ")");
 
             if (c.equals(clazz))
             {
@@ -138,22 +129,22 @@ public class VelTools66TestCase
 
         public void checkRead(final String file)
         {
-            log("checkRead(" + file + ")");
+            logger.debug("checkRead(" + file + ")");
         }
 
         public void checkPackageAccess(final String s)
         {
-            log("checkPackageAccess(" + s + ")");
+            logger.debug("checkPackageAccess(" + s + ")");
         }
 
         public void checkPropertyAccess(final String s)
         {
-            log("checkPropertyAccess(" + s + ")");
+            logger.debug("checkPropertyAccess(" + s + ")");
         }
 
         public void checkPermission(final Permission p)
         {
-            log("checkPermission(" + p + ")");
+            logger.debug("checkPermission(" + p + ")");
         }
     }
 }

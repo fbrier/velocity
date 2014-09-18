@@ -32,7 +32,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Multiple paths in the file resource loader.
@@ -79,7 +78,7 @@ public class StringResourceLoaderTestCase extends BaseTestCase
         engine.addProperty("string.resource.loader.modificationCheckInterval", "1");
 
         // Silence the logger.
-        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }

@@ -31,7 +31,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Load templates from the Classpath.
@@ -130,8 +129,7 @@ public class MultiLoaderTestCase extends BaseTestCase
                               "jar:file:" + FILE_RESOURCE_LOADER_PATH + "/test2.jar" );
 
 
-        engine.setProperty(
-                RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }

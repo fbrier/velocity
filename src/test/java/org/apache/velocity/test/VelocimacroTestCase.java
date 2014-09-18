@@ -29,7 +29,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MacroOverflowException;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * This class tests strange Velocimacro issues.
@@ -60,8 +59,7 @@ public class VelocimacroTestCase extends TestCase
          */
         engine.setProperty( RuntimeConstants.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
         engine.setProperty( RuntimeConstants.VM_MAX_DEPTH, new Integer(5));
-        engine.setProperty(
-                RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         engine.init();
     }
 

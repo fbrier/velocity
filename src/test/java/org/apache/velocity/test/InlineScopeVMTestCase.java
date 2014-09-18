@@ -31,7 +31,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Tests if the VM template-locality is working.
@@ -62,8 +61,7 @@ public class InlineScopeVMTestCase extends BaseTestCase implements TemplateTestB
         engine.setProperty(
                 RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
         
-        engine.setProperty(
-                RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }

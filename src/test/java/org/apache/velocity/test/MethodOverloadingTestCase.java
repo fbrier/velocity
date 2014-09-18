@@ -33,7 +33,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.log.LogChute;
 
 /**
  * Test a reported bug in which method overloading throws IllegalArgumentException 
@@ -43,7 +42,7 @@ import org.apache.velocity.runtime.log.LogChute;
  * @author <a href="mailto:wglass@forio.com">Will Glass-Husain</a>
  * @version $Id: MethodOverloadingTestCase.java 463298 2006-10-12 16:10:32Z henning $
  */
-public class MethodOverloadingTestCase extends BaseTestCase implements LogChute
+public class MethodOverloadingTestCase extends BaseTestCase
 {
     String logData;
     
@@ -181,13 +180,16 @@ public class MethodOverloadingTestCase extends BaseTestCase implements LogChute
     }
 
 
+/*
     public void log(int level, String message)
     {
         String out = "";
 
-        /*
+        */
+/*
          * Start with the appropriate prefix
-         */
+         *//*
+
         switch( level )
         {
             case DEBUG_ID :
@@ -212,17 +214,20 @@ public class MethodOverloadingTestCase extends BaseTestCase implements LogChute
 
         logData += "\n" + out + message;
     }
+*/
 
     public void init( RuntimeServices rs )
     {
         // do nothing with it
     }
+/*
 
     public void log(int level, String message, Throwable t)
     {
         // ignore the Throwable, we're not testing this method here
         log(level, message);
     }
+*/
 
     public boolean isLevelEnabled(int level)
     {

@@ -25,7 +25,6 @@ import java.util.Properties;
 import junit.framework.TestSuite;
 
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Test suite for Templates.
@@ -50,8 +49,7 @@ public class TemplateTestSuite extends TestSuite implements TemplateTestBase
             Velocity.setProperty(
                 Velocity.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
 
-            Velocity.setProperty(
-                    Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//            Velocity.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
             Velocity.init();
 

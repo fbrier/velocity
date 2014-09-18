@@ -20,9 +20,7 @@ package org.apache.velocity.test;
  */
 
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Test the resource exists method
@@ -33,7 +31,6 @@ public class ResourceExistsTestCase extends BaseTestCase
 {
     private VelocityEngine velocity;
     private String path = TEST_COMPARE_DIR + "/resourceexists";
-    private TestLogChute logger = new TestLogChute();
 
     public ResourceExistsTestCase(String name)
     {
@@ -49,13 +46,12 @@ try {
         velocity.setProperty("string.resource.loader.class", StringResourceLoader.class.getName());
 
         // actual instance of logger
-        logger.on();
-        velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, logger);
-        velocity.setProperty("runtime.log.logsystem.test.level", "debug");
+//        logger.on();
+//        velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, logger);
+//        velocity.setProperty("runtime.log.logsystem.test.level", "debug");
 } catch (Exception e) {
     System.out.println("exception via gump: "+e);
     e.printStackTrace();
-    System.out.println("log: "+logger.getLog());
 }
     }
 
@@ -66,7 +62,7 @@ try {
         {
             String msg = "testfile.vm was not found in path "+path;
             System.out.println(msg);
-            System.out.println("Log was: "+logger.getLog());
+//            System.out.println("Log was: "+logger.getLog());
             path = path+"/testfile.vm";
             java.io.File file = new java.io.File(path);
             if (file.exists()) {
@@ -85,7 +81,7 @@ try {
 } catch (Exception e) {
     System.out.println("exception via gump: "+e);
     e.printStackTrace();
-    System.out.println("log: "+logger.getLog());
+//    System.out.println("log: "+logger.getLog());
 }
     }
 
@@ -98,7 +94,7 @@ try {
 } catch (Exception e) {
     System.out.println("exception via gump: "+e);
     e.printStackTrace();
-    System.out.println("log: "+logger.getLog());
+//    System.out.println("log: "+logger.getLog());
 }
     }
 }

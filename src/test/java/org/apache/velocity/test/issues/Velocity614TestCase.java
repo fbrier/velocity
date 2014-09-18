@@ -54,9 +54,9 @@ public class Velocity614TestCase extends BaseTestCase
     public void testEarlyDefinedMacroWithBadArg()
     {
         // make sure this still bombs, but don't spam sysout
-        log.off();
+//        log.off();
         assertEvalException("#macro( evil $arg )$arg#end #evil(bar)");
-        log.on();
+//        log.on();
     }
 
     // just make sure this doesn't get broken
@@ -69,7 +69,7 @@ public class Velocity614TestCase extends BaseTestCase
     public void testDirectivesWithBadArg()
     {
         // make sure these all still bomb, but don't spam sysout
-        log.off();
+//        log.off();
         assertEvalException("#foreach(Stuff in That)foo#end");
         assertEvalException("#include(Stuff)");
         assertEvalException("#parse(Stuff)");
@@ -78,7 +78,7 @@ public class Velocity614TestCase extends BaseTestCase
         assertEvalException("#foreach($i in [1..3])#break(Stuff)#end");
         assertEvalException("#literal(Stuff)foo#end");
         assertEvalException("#evaluate(Stuff)", ParseErrorException.class);
-        log.on();
+//        log.on();
     }
 
     public void testLateDefinedMacroWithBadArg()

@@ -28,7 +28,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.test.BaseTestCase;
-import org.apache.velocity.test.misc.TestLogChute;
 import org.apache.velocity.util.introspection.AbstractChainableUberspector;
 import org.apache.velocity.util.introspection.Info;
 import org.apache.velocity.util.introspection.UberspectImpl;
@@ -59,7 +58,7 @@ public class ChainedUberspectorsTestCase extends BaseTestCase
     {
         engine = new VelocityEngine();
         
-        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         engine.addProperty(RuntimeConstants.UBERSPECT_CLASSNAME,"org.apache.velocity.util.introspection.UberspectImpl");
         engine.addProperty(RuntimeConstants.UBERSPECT_CLASSNAME,"org.apache.velocity.test.util.introspection.ChainedUberspectorsTestCase$ChainedUberspector");
         engine.addProperty(RuntimeConstants.UBERSPECT_CLASSNAME,"org.apache.velocity.test.util.introspection.ChainedUberspectorsTestCase$LinkedUberspector");

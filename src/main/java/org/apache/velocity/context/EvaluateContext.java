@@ -21,11 +21,12 @@ package org.apache.velocity.context;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *  This is a special, internal-use-only context implementation to be
@@ -46,6 +47,8 @@ import org.apache.velocity.util.ClassUtils;
  */
 public class EvaluateContext extends ChainedInternalContextAdapter
 {
+    Logger logger = LoggerFactory.getLogger( EvaluateContext.class );
+
     /** container for any local items */
     Context localContext;
     
@@ -70,11 +73,11 @@ public class EvaluateContext extends ChainedInternalContextAdapter
 
         if (contextClass != null && contextClass.length() > 0)
         {
-            rsvc.getLog().warn("The "+RuntimeConstants.EVALUATE_CONTEXT_CLASS+
-                " property has been deprecated. It will be removed in Velocity 2.0. "+
-                " Instead, please use the automatically provided $evaluate"+
-                " namespace to get and set local references"+
-                " (e.g. #set($evaluate.foo = 'bar') and $evaluate.foo).");
+            logger.warn( "The " + RuntimeConstants.EVALUATE_CONTEXT_CLASS +
+                " property has been deprecated. It will be removed in Velocity 2.0. " +
+                " Instead, please use the automatically provided $evaluate" +
+                " namespace to get and set local references" +
+                " (e.g. #set($evaluate.foo = 'bar') and $evaluate.foo)." );
             
             Object o = null;
 
@@ -86,14 +89,14 @@ public class EvaluateContext extends ChainedInternalContextAdapter
             {
                 String err = "The specified class for #evaluate() context (" + contextClass
                 + ") does not exist or is not accessible to the current classloader.";
-                rsvc.getLog().error(err);
+                logger.error( err );
                 throw new RuntimeException(err,cnfe);
             }
             catch (Exception e)
             {
                 String err = "The specified class for #evaluate() context (" + contextClass
                 + ") can not be loaded.";
-                rsvc.getLog().error(err,e);
+                logger.error( err, e );
                 throw new RuntimeException(err);
             }
 
@@ -101,7 +104,7 @@ public class EvaluateContext extends ChainedInternalContextAdapter
             {                
                 String err = "The specified class for #evaluate() context (" + contextClass
                 + ") does not implement " + Context.class.getName() + ".";
-                rsvc.getLog().error(err);
+                logger.error( err );
                 throw new RuntimeException(err);
             }
             
@@ -110,14 +113,14 @@ public class EvaluateContext extends ChainedInternalContextAdapter
         }
         else
         {
-            if (rsvc.getLog().isDebugEnabled())
+            if (logger.isDebugEnabled())
             {
-                rsvc.getLog().debug("No class specified for #evaluate() context, "+
-                    "so #set calls will now alter the global context and no longer be local.  "+
-                    "This is a change from earlier versions due to VELOCITY-704.  "+
-                    "If you need references within #evaluate to stay local, "+
-                    "please use the automatically provided $evaluate namespace instead "+
-                    "(e.g. #set($evaluate.foo = 'bar') and $evaluate.foo).");
+                logger.debug( "No class specified for #evaluate() context, " +
+                    "so #set calls will now alter the global context and no longer be local.  " +
+                    "This is a change from earlier versions due to VELOCITY-704.  " +
+                    "If you need references within #evaluate to stay local, " +
+                    "please use the automatically provided $evaluate namespace instead " +
+                    "(e.g. #set($evaluate.foo = 'bar') and $evaluate.foo)." );
             }
         }
         

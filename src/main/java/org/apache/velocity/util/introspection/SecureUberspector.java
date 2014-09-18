@@ -20,10 +20,11 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.util.Iterator;
-
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.util.RuntimeServicesAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Use a custom introspector that prevents classloader related method 
@@ -42,6 +43,8 @@ import org.apache.velocity.util.RuntimeServicesAware;
  */
 public class SecureUberspector extends UberspectImpl implements RuntimeServicesAware
 {
+    Logger logger = LoggerFactory.getLogger( SecureUberspector.class );
+
     RuntimeServices runtimeServices;
     
     public SecureUberspector()
@@ -62,7 +65,7 @@ public class SecureUberspector extends UberspectImpl implements RuntimeServicesA
         String [] badClasses = runtimeServices.getConfiguration()
                         .getStringArray(RuntimeConstants.INTROSPECTOR_RESTRICT_CLASSES);
         
-        introspector = new SecureIntrospectorImpl(badClasses, badPackages, log);
+        introspector = new SecureIntrospectorImpl(badClasses, badPackages);
     }
     
     /**
@@ -84,7 +87,7 @@ public class SecureUberspector extends UberspectImpl implements RuntimeServicesA
             }
             else
             {
-                log.warn("Cannot retrieve iterator from " + obj.getClass() +
+                logger.warn("Cannot retrieve iterator from " + obj.getClass() +
                          " due to security restrictions.");
             }
         }

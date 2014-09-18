@@ -26,7 +26,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.List;
-
 import org.apache.velocity.context.Context;
 import org.apache.velocity.context.InternalContextAdapterImpl;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -41,6 +40,8 @@ import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.ResourceManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is used for controlling all template
@@ -66,6 +67,8 @@ import org.apache.velocity.runtime.resource.ResourceManager;
  */
 public class Template extends Resource
 {
+    Logger logger = LoggerFactory.getLogger( Template.class );
+
     /*
      * The name of the variable to use when placing
      * the scope object into the context.
@@ -319,9 +322,9 @@ public class Template extends Resource
                         /*
                         * the macro lib wasn't found.  Note it and throw
                         */
-                        rsvc.getLog().error("template.merge(): " +
+                        logger.error( "template.merge(): " +
                                 "cannot find template " +
-                                (String) macroLibraries.get(i));
+                                (String)macroLibraries.get( i ) );
                         throw re;
                     }
                     catch (ParseErrorException pe)
@@ -330,16 +333,14 @@ public class Template extends Resource
                         * the macro lib was found, but didn't parse - syntax error
                         *  note it and throw
                         */
-                        rsvc.getLog().error("template.merge(): " +
-                                "syntax error in template " +
-                                (String) macroLibraries.get(i) + ".");
+                        logger.error("template.merge(): syntax error in template " + macroLibraries.get(i) + ".");
                         throw pe;
                     }
                     
                     catch (Exception e)
                     {
                         throw new RuntimeException("Template.merge(): parse failed in template  " +
-                                (String) macroLibraries.get(i) + ".", e);
+                                macroLibraries.get(i) + ".", e);
                     }
                 }
             }
@@ -361,9 +362,9 @@ public class Template extends Resource
                 {
                     throw stop;
                 }
-                else if (rsvc.getLog().isDebugEnabled())
+                else if (logger.isDebugEnabled())
                 {
-                    rsvc.getLog().debug(stop.getMessage());
+                    logger.debug(stop.getMessage());
                 }
             }
             catch (IOException e)

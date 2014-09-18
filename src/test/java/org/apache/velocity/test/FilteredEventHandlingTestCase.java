@@ -35,7 +35,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.log.LogChute;
 
 /**
  * Tests event handling for all event handlers when multiple event handlers are
@@ -44,7 +43,7 @@ import org.apache.velocity.runtime.log.LogChute;
  * @author <a href="mailto:wglass@forio.com">Will Glass-Husain</a>
  * @version $Id: FilteredEventHandlingTestCase.java 463298 2006-10-12 16:10:32Z henning $
  */
-public class FilteredEventHandlingTestCase extends BaseTestCase implements LogChute
+public class FilteredEventHandlingTestCase extends BaseTestCase
 {
 
     /**

@@ -26,7 +26,6 @@ import junit.framework.TestSuite;
 
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeSingleton;
-import org.apache.velocity.test.misc.TestLogChute;
 
 /**
  * Test case for the Velocity Introspector which
@@ -60,8 +59,7 @@ public class Introspector2TestCase extends BaseTestCase
     public void testIntrospector()
             throws Exception
     {
-        Velocity.setProperty(
-                Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+//        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         Velocity.init();
 

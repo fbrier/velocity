@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.velocity.runtime.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the internal introspector cache implementation.
@@ -35,15 +35,14 @@ import org.apache.velocity.runtime.log.Log;
  */
 public final class IntrospectorCacheImpl implements IntrospectorCache
 {
+    Logger logger = LoggerFactory.getLogger( IntrospectorCacheImpl.class );
+
     /**
      * define a public string so that it can be looked for if interested
      */
     public final static String CACHEDUMP_MSG =
         "IntrospectorCache detected classloader change. Dumping cache.";
 
-    /** Class logger */
-    private final Log log;
-    
     /**
      * Holds the method maps for the classes we know about. Map: Class --&gt; ClassMap object.
      */
@@ -58,14 +57,6 @@ public final class IntrospectorCacheImpl implements IntrospectorCache
     private final Set classNameCache = new HashSet();
 
     /**
-     * C'tor
-     */
-    public IntrospectorCacheImpl(final Log log)
-    {
-	    this.log = log;
-    }
-
-    /**
      * Clears the internal cache.
      */
     public void clear()
@@ -74,7 +65,7 @@ public final class IntrospectorCacheImpl implements IntrospectorCache
         {
             classMapCache.clear();
             classNameCache.clear();
-            log.debug(CACHEDUMP_MSG);
+            logger.debug(CACHEDUMP_MSG);
         }
     }
 
@@ -123,7 +114,7 @@ public final class IntrospectorCacheImpl implements IntrospectorCache
      */
     public ClassMap put(final Class c)
     {
-        final ClassMap classMap = new ClassMap(c, log);
+        final ClassMap classMap = new ClassMap(c);
         synchronized (classMapCache)
         {
             classMapCache.put(c, classMap);

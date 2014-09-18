@@ -22,18 +22,16 @@ package org.apache.velocity.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-
 import junit.framework.TestCase;
-
 import org.apache.oro.text.perl.Perl5Util;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
-import org.apache.velocity.test.misc.TestLogChute;
 import org.apache.velocity.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base test case that provides utility methods for
@@ -45,10 +43,11 @@ import org.apache.velocity.util.StringUtils;
  */
 public abstract class BaseTestCase extends TestCase implements TemplateTestBase
 {
+    Logger logger = LoggerFactory.getLogger( BaseTestCase.class );
+
     protected VelocityEngine engine;
     protected VelocityContext context;
     protected boolean DEBUG = false;
-    protected TestLogChute log;
     protected String stringRepoName = "string.repo";
 
     public BaseTestCase(String name)
@@ -69,10 +68,10 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         engine = new VelocityEngine();
 
         //by default, make the engine's log output go to the test-report
-        log = new TestLogChute(false, false);
-        log.setEnabledLevel(TestLogChute.INFO_ID);
-        log.setSystemErrLevel(TestLogChute.WARN_ID);
-        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, log);
+//        log = new TestLogChute(false, false);
+//        log.setEnabledLevel(TestLogChute.INFO_ID);
+//        log.setSystemErrLevel(TestLogChute.WARN_ID);
+//        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, log);
 
         // use string resource loader by default, instead of file
         engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,string");
@@ -111,13 +110,13 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
 
     protected void addTemplate(String name, String template)
     {
-        info("Template '"+name+"':  "+template);
+        logger.info("Template '"+name+"':  "+template);
         getStringRepository().putStringResource(name, template);
     }
 
     protected void removeTemplate(String name)
     {
-        info("Removed: '"+name+"'");
+        logger.info("Removed: '"+name+"'");
         getStringRepository().removeStringResource(name);
     }
 
@@ -125,36 +124,6 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
     {
         engine = null;
         context = null;
-    }
-
-    protected void info(String msg)
-    {
-        if (DEBUG)
-        {
-            if (engine == null)
-            {
-                Velocity.getLog().info(msg);
-            }
-            else
-            {
-                engine.getLog().info(msg);
-            }
-        }
-    }
-
-    protected void info(String msg, Throwable t)
-    {
-        if (DEBUG)
-        {
-            if (engine == null)
-            {
-                Velocity.getLog().info(msg);
-            }
-            else
-            {
-                engine.getLog().info(msg, t);
-            }
-        }
     }
 
     public void testBase()
@@ -170,8 +139,8 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
      * Compare an expected string with the given loaded template
      */
     protected void assertTmplEquals(String expected, String template)
-    {        
-        info("Expected:  " + expected + " from '" + template + "'");
+    {
+        logger.info("Expected:  " + expected + " from '" + template + "'");
 
         StringWriter writer = new StringWriter();
         try
@@ -180,16 +149,16 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         }
         catch (RuntimeException re)
         {
-            info("RuntimeException!", re);
+            logger.info("RuntimeException!", re);
             throw re;
         }
         catch (Exception e)
         {
-            info("Exception!", e);
+            logger.info("Exception!", e);
             throw new RuntimeException(e);
-        }        
+        }
 
-        info("Result:  " + writer.toString());
+        logger.info("Result:  " + writer.toString());
         assertEquals(expected, writer.toString());  
     }
     
@@ -198,9 +167,9 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
      */
     protected void assertContextValue(String key, Object expected)
     {
-        info("Expected value of '"+key+"': "+expected);
+        logger.info("Expected value of '"+key+"': "+expected);
         Object value = context.get(key);
-        info("Result: "+value);
+        logger.info("Result: "+value);
         assertEquals(expected, value);
     }
 
@@ -209,7 +178,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
      */
     protected void assertEvalEquals(String expected, String template)
     {
-        info("Expectation: "+expected);
+        logger.info("Expectation: "+expected);
         assertEquals(expected, evaluate(template));
     }
 
@@ -238,11 +207,11 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         {
             if (!DEBUG)
             {
-                log.off();
+//                log.off();
             }
             if (exceptionType != null)
             {
-                info("Expectation: "+exceptionType.getName());
+                logger.info("Expectation: "+exceptionType.getName());
             }
             evaluate(evil);
             fail("Template '"+evil+"' should have thrown an exception.");
@@ -259,7 +228,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         {
             if (!DEBUG)
             {
-                log.on();
+//                log.on();
             }
         }
         return null;
@@ -272,10 +241,10 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
                                               int line, int col)
     {
         String loc = template+"[line "+line+", column "+col+"]";
-        info("Expectation: Exception at "+loc);
+        logger.info("Expectation: Exception at "+loc);
         Exception e = assertEvalException(evil);
 
-        info("Result: "+e.getClass().getName()+" - "+e.getMessage());
+        logger.info("Result: "+e.getClass().getName()+" - "+e.getMessage());
         if (e.getMessage().indexOf(loc) < 1)
         {
             fail("Was expecting exception at "+loc+" instead of "+e.getMessage());
@@ -300,7 +269,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         StringWriter writer = new StringWriter();
         try
         {
-            info("Template: "+template);
+            logger.info("Template: "+template);
 
             // use template as its own name, since our templates are short
             // unless it's not that short, then shorten it...
@@ -308,17 +277,17 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
             engine.evaluate(context, writer, name, template);
 
             String result = writer.toString();
-            info("Result: "+result);
+            logger.info("Result: "+result);
             return result;
         }
         catch (RuntimeException re)
         {
-            info("RuntimeException!", re);
+            logger.info("RuntimeException!", re);
             throw re;
         }
         catch (Exception e)
         {
-            info("Exception!", e);
+            logger.info("Exception!", e);
             throw new RuntimeException(e);
         }
     }
@@ -365,14 +334,14 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
                 if (!testFile.exists())
                 {
                     String msg = "getFileName() result " + testFile.getPath() + " does not exist!";
-                    info(msg);
+                    logger.info(msg);
                     fail(msg);
                 }
 
                 if (!testFile.isFile())
                 {
                     String msg = "getFileName() result " + testFile.getPath() + " is not a file!";
-                    info(msg);
+                    logger.info(msg);
                     fail(msg);
                 }
             }
@@ -394,19 +363,19 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         File dir = new File(resultsDirectory);
         if (!dir.exists())
         {
-            info("Template results directory ("+resultsDirectory+") does not exist");
+            logger.info("Template results directory ("+resultsDirectory+") does not exist");
             if (dir.mkdirs())
             {
-                info("Created template results directory");
+                logger.info("Created template results directory");
                 if (DEBUG)
                 {
-                    info("Created template results directory: "+resultsDirectory);
+                    logger.info("Created template results directory: "+resultsDirectory);
                 }
             }
             else
             {
                 String errMsg = "Unable to create '"+resultsDirectory+"'";
-                info(errMsg);
+                logger.info(errMsg);
                 fail(errMsg);
             }
         }
@@ -475,8 +444,8 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         compare = normalizeNewlines(compare);
         if (DEBUG)
         {
-            info("Expection: "+compare);
-            info("Result: "+result);
+            logger.info("Expection: "+compare);
+            logger.info("Result: "+result);
         }
         return result.equals(compare);
     }

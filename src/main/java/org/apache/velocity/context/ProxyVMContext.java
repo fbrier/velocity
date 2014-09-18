@@ -23,7 +23,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.runtime.Renderable;
@@ -31,6 +30,8 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.parser.ParserTreeConstants;
 import org.apache.velocity.runtime.parser.node.ASTReference;
 import org.apache.velocity.runtime.parser.node.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Context for Velocity macro arguments.
@@ -49,6 +50,8 @@ import org.apache.velocity.runtime.parser.node.Node;
  */
 public class ProxyVMContext extends ChainedInternalContextAdapter
 {
+    Logger logger = LoggerFactory.getLogger( ProxyVMContext.class );
+
     /** container for our macro AST node arguments. Size must be power of 2. */
     Map vmproxyhash = new HashMap(8, 0.8f);
 
@@ -249,7 +252,7 @@ public class ProxyVMContext extends ChainedInternalContextAdapter
                 catch (Exception e)
                 {
                     String msg = "ProxyVMContext.get() : error rendering reference";
-                    rsvc.getLog().error(msg, e);
+                    logger.error( msg, e );
                     throw new VelocityException(msg, e);
                 }
             }

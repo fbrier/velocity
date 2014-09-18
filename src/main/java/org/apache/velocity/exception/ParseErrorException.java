@@ -21,10 +21,11 @@ package org.apache.velocity.exception;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.runtime.parser.ParseException;
+import org.apache.velocity.util.Formatter;
 import org.apache.velocity.util.introspection.Info;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *  Application-level exception thrown when a resource of any type
@@ -40,6 +41,8 @@ import org.apache.velocity.util.introspection.Info;
  */
 public class ParseErrorException extends VelocityException
 {
+    Logger logger = LoggerFactory.getLogger( ParseErrorException.class );
+
     /**
      * Version Id for serializable
      */
@@ -116,7 +119,7 @@ public class ParseErrorException extends VelocityException
                columnNumber = Integer.parseInt(match.group(2));
                String restOfMsg = match.group(3);
                msg = "Lexical error, " + restOfMsg + " at " 
-                 + Log.formatFileString(templateName, lineNumber, columnNumber);
+                 + Formatter.formatFileString( templateName, lineNumber, columnNumber );
             }
           
             //  ugly, ugly, ugly...

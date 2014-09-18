@@ -20,7 +20,9 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.lang.reflect.Method;
-import org.apache.velocity.runtime.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * <p>Prevent "dangerous" classloader/reflection related calls.  Use this
@@ -37,12 +39,14 @@ import org.apache.velocity.runtime.log.Log;
  */
 public class SecureIntrospectorImpl extends Introspector implements SecureIntrospectorControl
 {
+    Logger logger = LoggerFactory.getLogger( SecureIntrospectorImpl.class );
+
     private String[] badClasses;
     private String[] badPackages;
 
-    public SecureIntrospectorImpl(String[] badClasses, String[] badPackages, Log log)
+    public SecureIntrospectorImpl(String[] badClasses, String[] badPackages)
     {
-        super(log);
+        super();
         this.badClasses = badClasses;
         this.badPackages = badPackages;
     }
@@ -63,7 +67,7 @@ public class SecureIntrospectorImpl extends Introspector implements SecureIntros
     {
         if (!checkObjectExecutePermission(clazz, methodName))
         {
-            log.warn("Cannot retrieve method " + methodName +
+            logger.warn("Cannot retrieve method " + methodName +
                      " from object of class " + clazz.getName() +
                      " due to security restrictions.");
             return null;
