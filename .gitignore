@@ -31,3 +31,4 @@ catalog.xml
 nb-configuration.xml
 *~
 runtime
+@build.test@
