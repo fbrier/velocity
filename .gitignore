@@ -30,5 +30,5 @@ catalog.xml
 .metadata
 nb-configuration.xml
 *~
-runtime
+/runtime
 @build.test@
