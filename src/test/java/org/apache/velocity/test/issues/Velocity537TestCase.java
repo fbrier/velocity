@@ -48,12 +48,12 @@ public class Velocity537TestCase extends BaseTestCase
     /**
      * Template Directory
      */
-    private static final String TEMPLATE_DIR    = TEST_COMPARE_DIR + "/issues/velocity-537/templates";
+    private static final String TEMPLATE_DIR    = "/issues/velocity-537/templates";
 
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR     = TEST_COMPARE_DIR + "/issues/velocity-537/compare";
+    private static final String COMPARE_DIR     = "/issues/velocity-537/compare";
 
     public Velocity537TestCase(final String name) throws Exception
     {

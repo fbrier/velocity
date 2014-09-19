@@ -40,7 +40,7 @@ public class TexenTestCase extends BaseTestCase
     /**
      * Directory where comparison output is stored.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/texen/compare";
+    private static final String COMPARE_DIR = "/texen/compare";
 
     /**
      * Creates a new instance.

@@ -74,7 +74,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
 //        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, log);
 
         // use string resource loader by default, instead of file
-        engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,string");
+        engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,string,classpath");
         engine.addProperty("string.resource.loader.class", StringResourceLoader.class.getName());
         engine.addProperty("string.resource.loader.repository.name", stringRepoName);
         engine.addProperty("string.resource.loader.repository.static", "false");
@@ -237,8 +237,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
     /**
      * Ensure that the error message of the expected exception has the proper location info.
      */
-    protected Exception assertEvalExceptionAt(String evil, String template,
-                                              int line, int col)
+    protected Exception assertEvalExceptionAt(String evil, String template, int line, int col)
     {
         String loc = template+"[line "+line+", column "+col+"]";
         logger.info("Expectation: Exception at "+loc);

@@ -60,7 +60,7 @@ public class SetTestCase extends BaseTestCase
      * Path for templates. This property will override the
      * value in the default velocity properties file.
      */
-    private final static String FILE_RESOURCE_LOADER_PATH = TEST_COMPARE_DIR + "/set";
+    private final static String FILE_RESOURCE_LOADER_PATH = "/set";
 
     /**
      * Results relative to the build directory.
@@ -70,7 +70,7 @@ public class SetTestCase extends BaseTestCase
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/set/compare";
+    private static final String COMPARE_DIR = "/set/compare";
 
     /**
      * Default constructor.

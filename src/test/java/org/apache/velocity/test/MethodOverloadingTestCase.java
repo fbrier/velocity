@@ -65,7 +65,7 @@ public class MethodOverloadingTestCase extends BaseTestCase
     * Path for templates. This property will override the
     * value in the default velocity properties file.
     */
-   private final static String FILE_RESOURCE_LOADER_PATH = TEST_COMPARE_DIR + "/methodoverloading";
+   private final static String FILE_RESOURCE_LOADER_PATH = "/methodoverloading";
 
    /**
     * Results relative to the build directory.
@@ -75,7 +75,7 @@ public class MethodOverloadingTestCase extends BaseTestCase
    /**
     * Results relative to the build directory.
     */
-   private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/methodoverloading/compare";
+   private static final String COMPARE_DIR = "/methodoverloading/compare";
 
     /**
      * Default constructor.

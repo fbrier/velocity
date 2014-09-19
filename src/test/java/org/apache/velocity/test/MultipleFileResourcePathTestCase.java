@@ -45,13 +45,13 @@ public class MultipleFileResourcePathTestCase extends BaseTestCase
      * Path for templates. This property will override the
      * value in the default velocity properties file.
      */
-    private final static String FILE_RESOURCE_LOADER_PATH1 = TEST_COMPARE_DIR + "/multi/path1";
+    private final static String FILE_RESOURCE_LOADER_PATH1 = "/multi/path1";
 
     /**
      * Path for templates. This property will override the
      * value in the default velocity properties file.
      */
-    private final static String FILE_RESOURCE_LOADER_PATH2 = TEST_COMPARE_DIR + "/multi/path2";
+    private final static String FILE_RESOURCE_LOADER_PATH2 = "/multi/path2";
 
     /**
      * Results relative to the build directory.
@@ -61,7 +61,7 @@ public class MultipleFileResourcePathTestCase extends BaseTestCase
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/multi/compare";
+    private static final String COMPARE_DIR = "/multi/compare";
 
     VelocityEngine engine;
     

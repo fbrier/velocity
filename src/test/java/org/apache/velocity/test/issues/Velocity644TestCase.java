@@ -36,8 +36,9 @@ public class Velocity644TestCase extends BaseTestCase
     public void setUp() throws Exception
     {
         super.setUp();
-        engine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "test/templates/");
-        engine.setProperty(RuntimeConstants.VM_LIBRARY, "testCase644.vm");
+//        engine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "test/templates/");
+//        engine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/templates/");
+        engine.setProperty(RuntimeConstants.VM_LIBRARY, "/templates/testCase644.vm");
         engine.setProperty(RuntimeConstants.RUNTIME_REFERENCES_STRICT, Boolean.TRUE);
         context.put("NULL", null);
     }

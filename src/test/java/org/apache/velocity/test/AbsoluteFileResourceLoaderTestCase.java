@@ -58,7 +58,7 @@ public class AbsoluteFileResourceLoaderTestCase extends BaseTestCase
      * Path to template file.  This will get combined with the
      * application directory to form an absolute path
      */
-    private final static String TEMPLATE_PATH = TEST_COMPARE_DIR + "/absolute/absolute";
+    private final static String TEMPLATE_PATH = "/absolute/absolute";
 
     /**
      * Results relative to the build directory.
@@ -68,7 +68,7 @@ public class AbsoluteFileResourceLoaderTestCase extends BaseTestCase
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/absolute/compare";
+    private static final String COMPARE_DIR = "/absolute/compare";
 
     VelocityEngine engine;
     

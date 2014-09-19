@@ -402,7 +402,7 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
 
             if (logger.isDebugEnabled())
             {
-                logger.debug("Default Properties File: " +  File(DEFAULT_RUNTIME_PROPERTIES).getPath() );
+                logger.debug("Default Properties File: " + new File(DEFAULT_RUNTIME_PROPERTIES).getPath());
             }
 
 
@@ -461,8 +461,7 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
         } 
         catch (IOException e)
         {
-              throw new VelocityException("Error reading properties from '" 
-                + fileName + "'", e);
+              throw new VelocityException("Error reading properties from '" + fileName + "'", e);
         }
         
         Enumeration en = props.keys();

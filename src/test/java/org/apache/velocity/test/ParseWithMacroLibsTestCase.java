@@ -35,7 +35,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
 {
     private static final String RESULT_DIR = TEST_RESULT_DIR + "/parsemacros";
 
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/parsemacros/compare";
+    private static final String COMPARE_DIR = "/parsemacros/compare";
 
     public ParseWithMacroLibsTestCase(String name)
     {
@@ -192,8 +192,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         ve.setProperty("file.resource.loader.cache", new Boolean(cache));
 //        ve.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-                TEST_COMPARE_DIR + "/parsemacros");
+        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
         ve.init();
         
         return ve;
@@ -220,8 +219,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         ve1.setProperty("file.resource.loader.cache", Boolean.TRUE);
 //        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-                TEST_COMPARE_DIR + "/parsemacros");
+        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
         ve1.init();
         
         assureResultsDirectoryExists(RESULT_DIR);
@@ -269,8 +267,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         ve1.setProperty("file.resource.loader.cache", Boolean.TRUE);
 //        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-                TEST_COMPARE_DIR + "/parsemacros");
+        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
         ve1.init();
         
         assureResultsDirectoryExists(RESULT_DIR);

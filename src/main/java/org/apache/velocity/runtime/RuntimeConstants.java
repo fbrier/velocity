@@ -81,36 +81,6 @@ public interface RuntimeConstants
     /** Logging of invalid references. */
     String RUNTIME_LOG_REFERENCE_LOG_INVALID = "runtime.log.invalid.references";
 
-    /**
-     * @deprecated  Use LogChute.TRACE_PREFIX instead
-     */
-    String TRACE_PREFIX = " [trace] ";
-
-    /**
-     * @deprecated  Use LogChute.DEBUG_PREFIX instead
-     */
-    String DEBUG_PREFIX = " [debug] ";
-
-    /**
-     * @deprecated  Use LogChute.INFO_PREFIX instead
-     */
-    String INFO_PREFIX = "  [info] ";
-
-    /**
-     * @deprecated  Use LogChute.WARN_PREFIX instead
-     */
-    String WARN_PREFIX = "  [warn] ";
-
-    /**
-     * @deprecated  Use LogChute.ERROR_PREFIX instead
-     */
-    String ERROR_PREFIX = " [error] ";
-
-    /**
-     * @deprecated  This will be removed in a future version
-     */
-    String UNKNOWN_PREFIX = " [unknown] ";
-
     /*
      * ----------------------------------------------------------------------
      * D I R E C T I V E  C O N F I G U R A T I O N

@@ -49,7 +49,7 @@ public class StringResourceLoaderTestCase extends BaseTestCase
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/stringloader/compare";
+    private static final String COMPARE_DIR = "/stringloader/compare";
 
     VelocityEngine engine;
     

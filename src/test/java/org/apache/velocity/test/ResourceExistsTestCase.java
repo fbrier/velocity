@@ -30,7 +30,7 @@ import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 public class ResourceExistsTestCase extends BaseTestCase
 {
     private VelocityEngine velocity;
-    private String path = TEST_COMPARE_DIR + "/resourceexists";
+    private String path = "/resourceexists";
 
     public ResourceExistsTestCase(String name)
     {

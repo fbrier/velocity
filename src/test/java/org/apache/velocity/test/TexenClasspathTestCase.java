@@ -42,7 +42,7 @@ public class TexenClasspathTestCase
     /**
      * Directory where comparison output is stored.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/texen-classpath/compare";
+    private static final String COMPARE_DIR = "/texen-classpath/compare";
 
     /**
      * Creates a new instance.

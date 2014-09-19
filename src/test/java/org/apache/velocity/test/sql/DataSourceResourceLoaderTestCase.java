@@ -51,7 +51,7 @@ public class DataSourceResourceLoaderTestCase
      * Path to template file.  This will get combined with the
      * application directory to form an absolute path
      */
-    private final static String DATA_PATH = TEST_COMPARE_DIR + "/ds";
+    private final static String DATA_PATH = "/ds";
 
     /**
      * Results relative to the build directory.
@@ -61,7 +61,7 @@ public class DataSourceResourceLoaderTestCase
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/ds/templates";
+    private static final String COMPARE_DIR = "/ds/templates";
 
     /**
      * String (not containing any VTL) used to test unicode

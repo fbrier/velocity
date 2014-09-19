@@ -64,7 +64,7 @@ public class ClasspathResourceTestCase extends BaseTestCase
     /**
      * Results relative to the build directory.
      */
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/cpload/compare";
+    private static final String COMPARE_DIR = "/cpload/compare";
 
     /**
      * Default constructor.

@@ -54,7 +54,7 @@ public class VMLibraryTestCase extends BaseTestCase
 
     private static final String RESULT_DIR = TEST_RESULT_DIR + "/macrolibs";
 
-    private static final String COMPARE_DIR = TEST_COMPARE_DIR + "/macrolibs/compare";
+    private static final String COMPARE_DIR = "/macrolibs/compare";
 
     public VMLibraryTestCase(String name)
     {
@@ -78,8 +78,7 @@ public class VMLibraryTestCase extends BaseTestCase
 //        ve1.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-                TEST_COMPARE_DIR + "/macrolibs");
+        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/macrolibs");
         ve1.init();
 
         /**
@@ -96,8 +95,7 @@ public class VMLibraryTestCase extends BaseTestCase
 //        ve2.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         ve2.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve2.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
-                TEST_COMPARE_DIR + "/macrolibs");
+        ve2.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/macrolibs");
         ve2.init();
     }
 

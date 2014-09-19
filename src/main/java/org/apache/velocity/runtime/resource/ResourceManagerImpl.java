@@ -443,9 +443,7 @@ public class ResourceManagerImpl implements ResourceManager
 
                     if (logWhenFound && logger.isDebugEnabled())
                     {
-                        logger.debug("ResourceManager : found " + resourceName +
-                                  " with loader " +
-                                  resourceLoader.getClassName());
+                        logger.debug("ResourceManager : found " + resourceName + " with loader " + resourceLoader.getClassName() );
                     }
 
                     howOldItWas = resourceLoader.getLastModified(resource);
