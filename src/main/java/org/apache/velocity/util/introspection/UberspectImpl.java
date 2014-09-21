@@ -26,6 +26,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import org.apache.velocity.exception.VelocityException;
+import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.parser.node.AbstractExecutor;
 import org.apache.velocity.runtime.parser.node.BooleanPropertyExecutor;
 import org.apache.velocity.runtime.parser.node.GetExecutor;
@@ -52,6 +53,7 @@ import org.slf4j.LoggerFactory;
 public class UberspectImpl implements Uberspect
 {
     Logger logger = LoggerFactory.getLogger( UberspectImpl.class );
+    private RuntimeInstance ri;
 
     /**
      *  the default Velocity introspector
@@ -63,9 +65,10 @@ public class UberspectImpl implements Uberspect
      *  makes sure that the log gets set before this is called,
      *  we can initialize the Introspector using the log object.
      */
-    public void init()
+    public void init(RuntimeInstance ri)
     {
-        introspector = new Introspector();
+        this.ri = ri;
+        introspector = new Introspector(ri);
     }
 
     /**

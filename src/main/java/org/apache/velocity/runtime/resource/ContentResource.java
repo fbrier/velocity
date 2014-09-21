@@ -57,7 +57,7 @@ public class ContentResource extends Resource
      * @exception ResourceNotFoundException Resource could not be
      * found.
      */
-    public boolean process()
+    public void process()
         throws ResourceNotFoundException
     {
         BufferedReader reader = null;
@@ -77,8 +77,6 @@ public class ContentResource extends Resource
                 sw.write( buf, 0, len );
 
             setData(sw.toString());
-
-            return true;
         }
         catch ( ResourceNotFoundException e )
         {

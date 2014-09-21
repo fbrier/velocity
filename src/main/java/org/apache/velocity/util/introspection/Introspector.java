@@ -20,6 +20,7 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.lang.reflect.Method;
+import org.apache.velocity.runtime.RuntimeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +57,15 @@ import org.slf4j.LoggerFactory;
 public class Introspector extends IntrospectorBase
 {
     Logger logger = LoggerFactory.getLogger( Introspector.class );
+
+    /**
+     * This is a stop gap measure because Velocity 1.7 does not use IoC and there isn't a way to inject test classes
+     * @param ri
+     */
+    public Introspector( RuntimeInstance ri )
+    {
+        super( ri );
+    }
 
     /**
      * Gets the method defined by <code>name</code> and

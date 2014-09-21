@@ -414,49 +414,23 @@ public class ResourceManagerImpl implements ResourceManager
          * which one gives us a stream that we can use to
          * make a resource with.
          */
+        //Todo: If there is an currently selected ResourceLoader (as in #include), should we just go ahead and use the same one?  And skip the iterating?
+        ResourceLoader resourceLoader = null;
+        boolean processed = false;
 
-        long howOldItWas = 0;
-
-        for (Iterator it = resourceLoaders.iterator(); it.hasNext();)
+        for (Iterator it = resourceLoaders.iterator(); (! processed) && it.hasNext();)
         {
-            ResourceLoader resourceLoader = (ResourceLoader) it.next();
+            resourceLoader = (ResourceLoader) it.next();
             resource.setResourceLoader(resourceLoader);
-
-            /*
-             *  catch the ResourceNotFound exception
-             *  as that is ok in our new multi-loader environment
-             */
 
             try
             {
-
-                if (resource.process())
-                {
-                    /*
-                     *  FIXME  (gmj)
-                     *  moved in here - technically still
-                     *  a problem - but the resource needs to be
-                     *  processed before the loader can figure
-                     *  it out due to to the new
-                     *  multi-path support - will revisit and fix
-                     */
-
-                    if (logWhenFound && logger.isDebugEnabled())
-                    {
-                        logger.debug("ResourceManager : found " + resourceName + " with loader " + resourceLoader.getClassName() );
-                    }
-
-                    howOldItWas = resourceLoader.getLastModified(resource);
-
-                    break;
-                }
+                processResource( resourceName, resource, resourceLoader );
+                processed = true;
             }
             catch (ResourceNotFoundException rnfe)
             {
-                /*
-                 *  that's ok - it's possible to fail in
-                 *  multi-loader environment
-                 */
+                // That's ok - it's possible to fail in multi-loader environment
             }
         }
 
@@ -472,12 +446,30 @@ public class ResourceManagerImpl implements ResourceManager
          *  some final cleanup
          */
 
-        resource.setLastModified(howOldItWas);
+        resource.setLastModified(resourceLoader.getLastModified(resource));
         resource.setModificationCheckInterval(resource.getResourceLoader().getModificationCheckInterval());
 
         resource.touch();
 
         return resource;
+    }
+
+    private void processResource( String resourceName, Resource resource, ResourceLoader resourceLoader )
+    {
+        resource.process();
+        /*
+         *  FIXME  (gmj)
+         *  moved in here - technically still
+         *  a problem - but the resource needs to be
+         *  processed before the loader can figure
+         *  it out due to to the new
+         *  multi-path support - will revisit and fix
+         */
+
+        if (logWhenFound && logger.isDebugEnabled())
+        {
+            logger.debug("ResourceManager : found " + resourceName + " with loader " + resourceLoader.getClassName() );
+        }
     }
 
     /**

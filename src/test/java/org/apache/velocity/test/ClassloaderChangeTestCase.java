@@ -21,12 +21,11 @@ package org.apache.velocity.test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeServices;
@@ -41,10 +40,10 @@ import org.apache.velocity.util.introspection.IntrospectorCacheImpl;
 public class ClassloaderChangeTestCase extends TestCase
 {
     private VelocityEngine ve = null;
-    private boolean sawCacheDump = false;
 
     private static String OUTPUT = "Hello From Foo";
 
+    public static boolean sawCacheDump = false;
 
     /**
      * Default constructor.
@@ -58,7 +57,7 @@ public class ClassloaderChangeTestCase extends TestCase
             throws Exception
     {
         ve = new VelocityEngine();
-        ve.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM, this );
+        ve.setProperty(VelocityEngine.INTROSPECTOR_CACHE, new MockIntrospectorCacheImpl() );
         ve.init();
     }
 
@@ -136,32 +135,21 @@ public class ClassloaderChangeTestCase extends TestCase
         }
     }
 
-    /**
-     *  method to catch Velocity log messages.  When we
-     *  see the introspector dump message, then set the flag
-     */
-    public void log(int level, String message)
-    {
-        if (message.equals( IntrospectorCacheImpl.CACHEDUMP_MSG) )
-        {
-            sawCacheDump = true;
-        }
-    }
-
-    /**
-     *  method to catch Velocity log messages.  When we
-     *  see the introspector dump message, then set the flag
-     */
-    public void log(int level, String message, Throwable t)
-    {
-        // ignore the Throwable for this test
-        log(level, message);
-    }
-
     public boolean isLevelEnabled(int level)
     {
         return true;
     }
+
+    public static class MockIntrospectorCacheImpl extends IntrospectorCacheImpl
+    {
+        @Override
+        public void clear()
+        {
+            super.clear();
+            sawCacheDump = true;
+        }
+    }
+
 }
 
 /**
@@ -171,21 +159,19 @@ public class ClassloaderChangeTestCase extends TestCase
  */
 class TestClassloader extends ClassLoader
 {
-    private final static String testclass =
-        "test/classloader/Foo.class";
+    private final static String testclass = "/classloader/Foo.class";
 
     private Class fooClass = null;
 
-    public TestClassloader()
-            throws Exception
+    public TestClassloader() throws Exception
     {
-        File f = new File( testclass );
+        File f = new File( getClass().getResource( testclass ).toURI() );
 
         byte[] barr = new byte[ (int) f.length() ];
 
-        FileInputStream fis = new FileInputStream( f );
-        fis.read( barr );
-        fis.close();
+        InputStream inputStream = new FileInputStream( f );
+        inputStream.read( barr );
+        inputStream.close();
 
         fooClass = defineClass("Foo", barr, 0, barr.length);
     }

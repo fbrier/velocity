@@ -195,6 +195,8 @@ public interface RuntimeConstants
     /** The public handle for turning the caching on in the FileResourceLoader. */
     String FILE_RESOURCE_LOADER_CACHE = "file.resource.loader.cache";
 
+    String INTROSPECTOR_CACHE = "org.apache.velocity.util.introspection.IntrospectorCacheImpl";
+
     /*
      * ----------------------------------------------------------------------
      *  E V E N T  H A N D L E R  C O N F I G U R A T I O N

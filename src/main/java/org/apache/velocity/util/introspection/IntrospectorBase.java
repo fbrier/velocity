@@ -20,6 +20,7 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.lang.reflect.Method;
+import org.apache.velocity.runtime.RuntimeInstance;
 
 /**
  * Lookup a a Method object for a particular class given the name of a method
@@ -53,13 +54,16 @@ public abstract class IntrospectorBase
 {
     /** The Introspector Cache */
     private final IntrospectorCache introspectorCache;
-    
+
     /**
      * C'tor.
      */
-    protected IntrospectorBase()
+    protected IntrospectorBase(RuntimeInstance ri)
     {
-        introspectorCache = new IntrospectorCacheImpl(); // TODO: Load that from properties.
+        // Create a IntrospectorCacheImpl
+        // Todo: Because of the lack of IoC, we can't mock the IntrospectorCacheImpl and inject it.
+        Object prop = ri.getProperty( ri.INTROSPECTOR_CACHE );
+        introspectorCache = null == prop ? new IntrospectorCacheImpl() : (IntrospectorCache)prop;
     }
     
     /**

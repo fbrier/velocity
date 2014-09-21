@@ -20,6 +20,7 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.util.Iterator;
+import org.apache.velocity.runtime.RuntimeInstance;
 
 /**
  * Default implementation of a {@link ChainableUberspector chainable uberspector} that forwards all calls to the wrapped
@@ -51,10 +52,10 @@ public abstract class AbstractChainableUberspector extends UberspectImpl impleme
      * @see org.apache.velocity.util.introspection.Uberspect#init()
      */
     //@Override
-    public void init()
+    public void init(RuntimeInstance ri)
     {
         if (this.inner != null) {
-            this.inner.init();
+            this.inner.init( ri );
         }
     }
 

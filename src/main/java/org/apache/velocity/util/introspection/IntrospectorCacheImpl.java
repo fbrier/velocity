@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * @version $Id: IntrospectorCacheImpl.java 898032 2010-01-11 19:51:03Z nbubna $
  * @since 1.5
  */
-public final class IntrospectorCacheImpl implements IntrospectorCache
+public class IntrospectorCacheImpl implements IntrospectorCache
 {
     Logger logger = LoggerFactory.getLogger( IntrospectorCacheImpl.class );
 

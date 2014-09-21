@@ -19,11 +19,8 @@ package org.apache.velocity.context;
  * under the License.    
  */
 
-import org.apache.velocity.util.introspection.IntrospectionCacheData;
-
-import org.apache.velocity.runtime.resource.Resource;
-
 import java.util.List;
+import org.apache.velocity.util.introspection.IntrospectionCacheData;
 
 /**
  *  interface to encapsulate the 'stuff' for internal operation of velocity.
@@ -38,7 +35,7 @@ import java.util.List;
  *  @author <a href="mailto:Christoph.Reck@dlr.de">Christoph Reck</a>
  *  @version $Id: InternalHousekeepingContext.java 731266 2009-01-04 15:11:20Z byron $
  */
-interface InternalHousekeepingContext
+interface InternalHousekeepingContext extends ResourceContext
 {
     /**
      *  set the current template name on top of stack
@@ -117,19 +114,6 @@ interface InternalHousekeepingContext
      */
     void icachePut( Object key, IntrospectionCacheData o );
 
-    /**
-     *  temporary fix to enable #include() to figure out
-     *  current encoding.
-     *
-     * @return The current resource.
-     */
-    Resource getCurrentResource();
-
-
-    /**
-     * @param r
-     */
-    void setCurrentResource( Resource r );
 
     /**
      * Set the macro library list for the current template.

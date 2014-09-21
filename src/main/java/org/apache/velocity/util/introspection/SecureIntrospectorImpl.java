@@ -20,6 +20,7 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.lang.reflect.Method;
+import org.apache.velocity.runtime.RuntimeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +45,9 @@ public class SecureIntrospectorImpl extends Introspector implements SecureIntros
     private String[] badClasses;
     private String[] badPackages;
 
-    public SecureIntrospectorImpl(String[] badClasses, String[] badPackages)
+    public SecureIntrospectorImpl(RuntimeInstance ri, String[] badClasses, String[] badPackages)
     {
-        super();
+        super(ri);
         this.badClasses = badClasses;
         this.badPackages = badPackages;
     }

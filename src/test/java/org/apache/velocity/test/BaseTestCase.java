@@ -22,6 +22,7 @@ package org.apache.velocity.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Scanner;
 import junit.framework.TestCase;
 import org.apache.oro.text.perl.Perl5Util;
 import org.apache.velocity.VelocityContext;
@@ -329,6 +330,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
             if (mustExist)
             {
                 File testFile = new File(buf.toString());
+//                File testFile = new File( this.getClass().getResource( buf.toString() ).getFile() );
 
                 if (!testFile.exists())
                 {
@@ -436,7 +438,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
                                String baseFileName,
                                String compareExt) throws Exception
     {
-        String compare = getFileContents(compareDir, baseFileName, compareExt);
+        String compare = getResourceContents( compareDir, baseFileName, compareExt );
 
         // normalize each wrt newline
         result = normalizeNewlines(result);
@@ -447,6 +449,25 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
             logger.info("Result: "+result);
         }
         return result.equals(compare);
+    }
+
+    private String getResourceContents( String dir, String baseFileName, String ext )
+    {
+        StringBuffer buf = new StringBuffer();
+        if ( ( null != dir ) && ! dir.isEmpty() )
+        {
+            buf.append( dir ).append( File.separator );
+        }
+
+        buf.append( baseFileName );
+
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(ext))
+        {
+            buf.append('.').append(ext);
+        }
+
+        getClass().getResourceAsStream( buf.toString() );
+        return new Scanner( getClass().getResourceAsStream( buf.toString() ) ).useDelimiter( "\\Z" ).next();
     }
 
     /**

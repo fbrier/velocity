@@ -19,10 +19,13 @@ package org.apache.velocity.runtime.directive;
  * under the License.    
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import org.apache.velocity.app.event.EventHandlerUtil;
+import org.apache.velocity.context.Context;
 import org.apache.velocity.context.InternalContextAdapter;
+import org.apache.velocity.context.ResourceContext;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.exception.TemplateInitException;
@@ -238,7 +241,10 @@ public class Include extends InputBase
         try
         {
             if (!blockinput)
-                resource = rsvc.getContent(arg, getInputEncoding(context));
+            {
+                arg = makePathRelative( context, arg );
+                resource = rsvc.getContent( arg, getInputEncoding( context ) );
+            }
         }
         catch ( ResourceNotFoundException rnfe )
         {
@@ -281,6 +287,32 @@ public class Include extends InputBase
 
         writer.write((String)resource.getData());
         return true;
+    }
+
+    private String makePathRelative( Context context, String includeResourcePath )
+    {
+        String cleanPath = includeResourcePath.trim();
+
+        if ( File.separatorChar != cleanPath.indexOf( 0 ) )
+        {
+            // New resource path is specified relative to the current resource
+            if (context instanceof ResourceContext )
+            {
+                Resource currentResource =  ( (ResourceContext)context ).getCurrentResource();
+                if ( null != currentResource )
+                {
+                    String curResourceName = currentResource.getName().trim();
+                    int fileSepIndex = curResourceName.lastIndexOf( File.separatorChar );
+                    if (fileSepIndex > 0 )
+                    {
+                        // Current resource path needs to be prepended to includeResourcePath
+                        includeResourcePath = curResourceName.substring( 0, fileSepIndex +1 ) + cleanPath;
+                    }
+                }
+            }
+        }
+
+        return includeResourcePath;
     }
 
     /**

@@ -214,11 +214,6 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
         vmFactory = new VelocimacroFactory( this );
 
         /*
-         *  make a new introspector and initialize it
-         */
-        introspector = new Introspector();
-
-        /*
          * and a store for the application attributes
          */
         applicationAttributes = new HashMap();
@@ -255,6 +250,11 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
             initializeDirectives();
             initializeEventHandlers();
             initializeParserPool();
+
+            /*
+             *  make a new introspector and initialize it
+             */
+            introspector = new Introspector( this );
 
             initializeIntrospection();
             initializeEvaluateScopeSettings();
@@ -369,7 +369,7 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
 
         if(uberSpect != null)
         {
-            uberSpect.init();
+            uberSpect.init( this );
         }
         else
         {

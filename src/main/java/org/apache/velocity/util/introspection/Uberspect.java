@@ -20,6 +20,7 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.util.Iterator;
+import org.apache.velocity.runtime.RuntimeInstance;
 
 /**
  * 'Federated' introspection/reflection interface to allow the introspection
@@ -33,7 +34,7 @@ public interface Uberspect
     /**
      *  Initializer - will be called before use
      */
-    public void init();
+    public void init(RuntimeInstance ri);
 
     /**
      *  To support iteratives - #foreach()

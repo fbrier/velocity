@@ -118,7 +118,7 @@ public abstract class Resource
      * returning <code>false</code>.
      * @throws ParseErrorException
      */
-    public abstract boolean process()
+    public abstract void process()
         throws ResourceNotFoundException, ParseErrorException;
 
     /**

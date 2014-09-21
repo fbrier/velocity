@@ -20,6 +20,7 @@ package org.apache.velocity.util.introspection;
  */
 
 import java.util.Iterator;
+import org.apache.velocity.runtime.RuntimeInstance;
 
 /**
  * <p>
@@ -56,10 +57,10 @@ public class LinkingUberspector extends AbstractChainableUberspector
      * @see org.apache.velocity.util.introspection.Uberspect#init()
      */
     //@Override
-    public void init()
+    public void init(RuntimeInstance ri)
     {
-        leftUberspect.init();
-        rightUberspect.init();
+        leftUberspect.init(ri);
+        rightUberspect.init(ri);
     }
 
     /**

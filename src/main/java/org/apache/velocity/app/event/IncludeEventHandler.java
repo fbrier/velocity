@@ -90,8 +90,9 @@ public interface  IncludeEventHandler extends EventHandler
 
             executed = true;
             includeResourcePath = ((IncludeEventHandler) handler)
-                .includeEvent(includeResourcePath, currentResourcePath, directiveName); 
+                .includeEvent(includeResourcePath, currentResourcePath, directiveName);
         }
+
 
         public Object getReturnValue()
         {

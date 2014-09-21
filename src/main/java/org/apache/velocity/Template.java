@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.List;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.context.ContextHolder;
 import org.apache.velocity.context.InternalContextAdapterImpl;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -96,7 +97,7 @@ public class Template extends Resource
      *          to syntax (or other) error.
      * @throws IOException problem reading input stream
      */
-    public boolean process()
+    public void process()
         throws ResourceNotFoundException, ParseErrorException
     {
         data = null;
@@ -136,7 +137,6 @@ public class Template extends Resource
                 BufferedReader br = new BufferedReader( new InputStreamReader( is, encoding ) );
                 data = rsvc.parse( br, name);
                 initDocument();
-                return true;
             }
             catch( UnsupportedEncodingException  uce )
             {
@@ -292,126 +292,135 @@ public class Template extends Resource
             throw errorCondition;
         }
 
-        if( data != null)
+        try
         {
-            /*
-             *  create an InternalContextAdapter to carry the user Context down
-             *  into the rendering engine.  Set the template name and render()
-             */
+            ContextHolder.pushContext( context );
 
-            InternalContextAdapterImpl ica = new InternalContextAdapterImpl( context );
-
-            /**
-             * Set the macro libraries
-             */
-            ica.setMacroLibraries(macroLibraries);
-
-            if (macroLibraries != null)
-            {
-                for (int i = 0; i < macroLibraries.size(); i++)
-                {
-                    /**
-                     * Build the macro library
-                     */
-                    try
-                    {
-                        rsvc.getTemplate((String) macroLibraries.get(i));
-                    }
-                    catch (ResourceNotFoundException re)
-                    {
-                        /*
-                        * the macro lib wasn't found.  Note it and throw
-                        */
-                        logger.error( "template.merge(): " +
-                                "cannot find template " +
-                                (String)macroLibraries.get( i ) );
-                        throw re;
-                    }
-                    catch (ParseErrorException pe)
-                    {
-                        /*
-                        * the macro lib was found, but didn't parse - syntax error
-                        *  note it and throw
-                        */
-                        logger.error("template.merge(): syntax error in template " + macroLibraries.get(i) + ".");
-                        throw pe;
-                    }
-                    
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException("Template.merge(): parse failed in template  " +
-                                macroLibraries.get(i) + ".", e);
-                    }
-                }
-            }
-
-            if (provideScope)
-            {
-                ica.put(scopeName, new Scope(this, ica.get(scopeName)));
-            }
-            try
-            {
-                ica.pushCurrentTemplateName( name );
-                ica.setCurrentResource( this );
-
-                ( (SimpleNode) data ).render( ica, writer);
-            }
-            catch (StopCommand stop)
-            {
-                if (!stop.isFor(this))
-                {
-                    throw stop;
-                }
-                else if (logger.isDebugEnabled())
-                {
-                    logger.debug(stop.getMessage());
-                }
-            }
-            catch (IOException e)
-            {
-                throw new VelocityException("IO Error rendering template '"+ name + "'", e);
-            }
-            finally
+            if( data != null)
             {
                 /*
-                 *  lets make sure that we always clean up the context
+                 *  create an InternalContextAdapter to carry the user Context down
+                 *  into the rendering engine.  Set the template name and render()
                  */
-                ica.popCurrentTemplateName();
-                ica.setCurrentResource( null );
+
+                InternalContextAdapterImpl ica = new InternalContextAdapterImpl( context );
+
+                /**
+                 * Set the macro libraries
+                 */
+                ica.setMacroLibraries(macroLibraries);
+
+                if (macroLibraries != null)
+                {
+                    for (int i = 0; i < macroLibraries.size(); i++)
+                    {
+                        /**
+                         * Build the macro library
+                         */
+                        try
+                        {
+                            rsvc.getTemplate((String) macroLibraries.get(i));
+                        }
+                        catch (ResourceNotFoundException re)
+                        {
+                            /*
+                            * the macro lib wasn't found.  Note it and throw
+                            */
+                            logger.error( "template.merge(): " +
+                                    "cannot find template " +
+                                    (String)macroLibraries.get( i ) );
+                            throw re;
+                        }
+                        catch (ParseErrorException pe)
+                        {
+                            /*
+                            * the macro lib was found, but didn't parse - syntax error
+                            *  note it and throw
+                            */
+                            logger.error("template.merge(): syntax error in template " + macroLibraries.get(i) + ".");
+                            throw pe;
+                        }
+
+                        catch (Exception e)
+                        {
+                            throw new RuntimeException("Template.merge(): parse failed in template  " +
+                                    macroLibraries.get(i) + ".", e);
+                        }
+                    }
+                }
 
                 if (provideScope)
                 {
-                    Object obj = ica.get(scopeName);
-                    if (obj instanceof Scope)
+                    ica.put(scopeName, new Scope(this, ica.get(scopeName)));
+                }
+                try
+                {
+                    ica.pushCurrentTemplateName( name );
+                    ica.setCurrentResource( this );
+
+                    ( (SimpleNode) data ).render( ica, writer);
+                }
+                catch (StopCommand stop)
+                {
+                    if (!stop.isFor(this))
                     {
-                        Scope scope = (Scope)obj;
-                        if (scope.getParent() != null)
+                        throw stop;
+                    }
+                    else if (logger.isDebugEnabled())
+                    {
+                        logger.debug(stop.getMessage());
+                    }
+                }
+                catch (IOException e)
+                {
+                    throw new VelocityException("IO Error rendering template '"+ name + "'", e);
+                }
+                finally
+                {
+                    /*
+                     *  lets make sure that we always clean up the context
+                     */
+                    ica.popCurrentTemplateName();
+                    ica.setCurrentResource( null );
+
+                    if (provideScope)
+                    {
+                        Object obj = ica.get(scopeName);
+                        if (obj instanceof Scope)
                         {
-                            ica.put(scopeName, scope.getParent());
-                        }
-                        else if (scope.getReplaced() != null)
-                        {
-                            ica.put(scopeName, scope.getReplaced());
-                        }
-                        else
-                        {
-                            ica.remove(scopeName);
+                            Scope scope = (Scope)obj;
+                            if (scope.getParent() != null)
+                            {
+                                ica.put(scopeName, scope.getParent());
+                            }
+                            else if (scope.getReplaced() != null)
+                            {
+                                ica.put(scopeName, scope.getReplaced());
+                            }
+                            else
+                            {
+                                ica.remove(scopeName);
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                /*
+                 * this shouldn't happen either, but just in case.
+                 */
+
+                String msg = "Template.merge() failure. The document is null, " +
+                    "most likely due to parsing error.";
+
+                throw new RuntimeException(msg);
+
+            }
         }
-        else
+        finally
         {
-            /*
-             * this shouldn't happen either, but just in case.
-             */
-
-            String msg = "Template.merge() failure. The document is null, " +
-                "most likely due to parsing error.";
-
-            throw new RuntimeException(msg);
-
+            ContextHolder.popContext();
         }
     }
 }
