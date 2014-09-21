@@ -62,8 +62,7 @@ public class IncludeErrorTestCase extends BaseTestCase implements TemplateTestBa
     public void setUp() throws Exception
     {
         ve = new VelocityEngine();
-        ve.setProperty(
-                Velocity.FILE_RESOURCE_LOADER_PATH, "test/includeerror");
+        ve.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, "test/includeerror");
 
         ve.init();
     }
@@ -72,22 +71,22 @@ public class IncludeErrorTestCase extends BaseTestCase implements TemplateTestBa
 
     public void testMissingParseError() throws Exception
     {
-        checkException("missingparse.vm",ResourceNotFoundException.class);
+        checkException("/includeerror/missingparse.vm",ResourceNotFoundException.class);
     }
 
     public void testMissingIncludeError() throws Exception
     {
-        checkException("missinginclude.vm",ResourceNotFoundException.class);
+        checkException("/includeerror/missinginclude.vm",ResourceNotFoundException.class);
     }
 
     public void testParseError() throws Exception
     {
-        checkException("parsemain.vm",ParseErrorException.class);
+        checkException("/includeerror/parsemain.vm",ParseErrorException.class);
     }
 
     public void testParseError2() throws Exception
     {
-        checkException("parsemain2.vm",ParseErrorException.class);
+        checkException("/includeerror/parsemain2.vm",ParseErrorException.class);
     }
 
 
