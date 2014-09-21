@@ -29,6 +29,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 /**
  * Test parser exception is generated with appropriate info.
@@ -75,8 +76,8 @@ public class ParseExceptionTestCase extends BaseTestCase
 
         VelocityEngine ve = new VelocityEngine();
 
-        ve.setProperty("file.resource.loader.cache", "true");
-        ve.setProperty("file.resource.loader.path", FILE_RESOURCE_LOADER_PATH);
+        ve.setProperty( RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, "true");
+//        ve.setProperty("file.resource.loader.path", FILE_RESOURCE_LOADER_PATH);
         ve.init();
 
 
@@ -86,13 +87,13 @@ public class ParseExceptionTestCase extends BaseTestCase
 
         try
         {
-            Template template = ve.getTemplate("badtemplate.vm");
+            Template template = ve.getTemplate("/parseexception/badtemplate.vm");
             template.merge(context, writer);
             fail("Should have thown a ParseErrorException");
         }
         catch (ParseErrorException e)
         {
-            assertEquals("badtemplate.vm",e.getTemplateName());
+            assertEquals("/parseexception/badtemplate.vm", e.getTemplateName());
             assertEquals(5,e.getLineNumber());
             assertEquals(9,e.getColumnNumber());
         }

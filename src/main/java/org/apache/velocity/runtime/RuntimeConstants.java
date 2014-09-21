@@ -195,7 +195,16 @@ public interface RuntimeConstants
     /** The public handle for turning the caching on in the FileResourceLoader. */
     String FILE_RESOURCE_LOADER_CACHE = "file.resource.loader.cache";
 
+    /** The public handle for turning the caching on in the ClasspathResourceLoader. */
+    String CLASSPATH_RESOURCE_LOADER_CACHE = "classpath.resource.loader.cache";
+
+    /** The public handle for setting a path in the ClasspathResourceLoader. */
+//    String CLASSPATH_RESOURCE_LOADER_PATH = "classpath.resource.loader.path";
+
+    // Optionally injected Object to be used as IntrospectorCache.  Todo: Temporary fix until IoC is added.
     String INTROSPECTOR_CACHE = "org.apache.velocity.util.introspection.IntrospectorCacheImpl";
+
+
 
     /*
      * ----------------------------------------------------------------------

@@ -81,17 +81,17 @@ public class Velocity537TestCase extends BaseTestCase
 
     public void testVelocity537() throws Exception
     {
-        executeTest("velocity537.vm");
+        executeTest("velocity537.vm", TEMPLATE_DIR);
     }
 
     public void testVelocity537Again() throws Exception
     {
-        executeTest("velocity537b.vm");
+        executeTest("velocity537b.vm", TEMPLATE_DIR);
     }
 
-    protected Template executeTest(final String templateName) throws Exception
+    protected Template executeTest(final String templateName, String templateDir ) throws Exception
     {
-        Template template = velocityEngine.getTemplate(templateName);
+        Template template = velocityEngine.getTemplate(templateDir + "/" + templateName);
 
         FileOutputStream fos = new FileOutputStream(getFileName(RESULTS_DIR, templateName, RESULT_FILE_EXT));
 
@@ -109,7 +109,7 @@ public class Velocity537TestCase extends BaseTestCase
             StringWriter out = new StringWriter();
             template.merge(context, out);
 
-            String compare = getFileContents(COMPARE_DIR, templateName, CMP_FILE_EXT);
+            String compare = getResourceContents(COMPARE_DIR, templateName, CMP_FILE_EXT);
 
             fail("Output incorrect for Template: " + templateName + ": \""+out+"\""+
                  "; it did not match: \""+compare+"\"");

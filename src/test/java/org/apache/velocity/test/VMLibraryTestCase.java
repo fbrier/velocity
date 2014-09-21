@@ -73,12 +73,12 @@ public class VMLibraryTestCase extends BaseTestCase
         /**
          * Turn on the cache
          */
-        ve1.setProperty("file.resource.loader.cache", Boolean.TRUE);
+        ve1.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE);
 
 //        ve1.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
-        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/macrolibs");
+        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
+//        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/macrolibs");
         ve1.init();
 
         /**
@@ -90,12 +90,12 @@ public class VMLibraryTestCase extends BaseTestCase
         /**
          * Turn on the cache
          */
-        ve2.setProperty("file.resource.loader.cache", Boolean.FALSE);
+        ve2.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.FALSE);
 
 //        ve2.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
-        ve2.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve2.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/macrolibs");
+        ve2.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
+        //ve2.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/macrolibs");
         ve2.init();
     }
 
@@ -131,9 +131,9 @@ public class VMLibraryTestCase extends BaseTestCase
         VelocityContext context = new VelocityContext();
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        templateList.add("vm_library1.vm");
+        templateList.add("/macrolibs/vm_library1.vm");
 
-        Template template = ve1.getTemplate("vm_library_local.vm");
+        Template template = ve1.getTemplate("/macrolibs/vm_library_local.vm");
         template.merge(context, writer, templateList);
 
         /**
@@ -141,22 +141,22 @@ public class VMLibraryTestCase extends BaseTestCase
          * with a new definition for macros
          */
         templateList.remove(0);
-        templateList.add("vm_library2.vm");
-        template = ve1.getTemplate("vm_library_local.vm");
+        templateList.add("/macrolibs/vm_library2.vm");
+        template = ve1.getTemplate("/macrolibs/vm_library_local.vm");
         template.merge(context, writer, templateList);
 
         /*
          *Show that caching is working
          */
-        Template t1 = ve1.getTemplate("vm_library_local.vm");
-        Template t2 = ve1.getTemplate("vm_library_local.vm");
+        Template t1 = ve1.getTemplate("/macrolibs/vm_library_local.vm");
+        Template t2 = ve1.getTemplate("/macrolibs/vm_library_local.vm");
 
         assertEquals("Both templates refer to the same object", t1, t2);
 
         /**
          * Remove the libraries
          */
-        template = ve1.getTemplate("vm_library_local.vm");
+        template = ve1.getTemplate("/macrolibs/vm_library_local.vm");
         template.merge(context, writer);
 
         /**
@@ -199,9 +199,9 @@ public class VMLibraryTestCase extends BaseTestCase
         VelocityContext context = new VelocityContext();
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        templateList.add("vm_library1.vm");
+        templateList.add("/macrolibs/vm_library1.vm");
 
-        Template template = ve1.getTemplate("vm_library_global.vm");
+        Template template = ve1.getTemplate("/macrolibs/vm_library_global.vm");
         template.merge(context, writer, templateList);
 
         /**
@@ -209,17 +209,17 @@ public class VMLibraryTestCase extends BaseTestCase
          * with a new definition for macros
          */
         templateList.remove(0);
-        templateList.add("vm_library2.vm");
-        template = ve1.getTemplate("vm_library_global.vm");
+        templateList.add("/macrolibs/vm_library2.vm");
+        template = ve1.getTemplate("/macrolibs/vm_library_global.vm");
         template.merge(context, writer, templateList);
 
         /*
          *Show that caching is not working (We have turned off cache)
          */
-        Template t1 = ve2.getTemplate("vm_library_global.vm");
-        Template t2 = ve2.getTemplate("vm_library_global.vm");
+        Template t1 = ve2.getTemplate("/macrolibs/vm_library_global.vm");
+        Template t2 = ve2.getTemplate("/macrolibs/vm_library_global.vm");
 
-        assertNotSame("Defferent objects", t1, t2);
+        assertNotSame("Different objects", t1, t2);
 
         /**
          * Write to the file
@@ -254,17 +254,16 @@ public class VMLibraryTestCase extends BaseTestCase
         /**
          * Create a file output stream for appending
          */
-        FileOutputStream fos = new FileOutputStream (getFileName(
-                RESULT_DIR, "vm_library_duplicate", RESULT_FILE_EXT), true);
+        FileOutputStream fos = new FileOutputStream (getFileName( RESULT_DIR, "vm_library_duplicate", RESULT_FILE_EXT), true);
 
         List templateList = new ArrayList();
         VelocityContext context = new VelocityContext();
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        templateList.add("vm_library1.vm");
-        templateList.add("vm_library2.vm");
+        templateList.add("/macrolibs/vm_library1.vm");
+        templateList.add("/macrolibs/vm_library2.vm");
 
-        Template template = ve1.getTemplate("vm_library.vm");
+        Template template = ve1.getTemplate("/macrolibs/vm_library.vm");
         template.merge(context, writer, templateList);
 
         /**
@@ -273,8 +272,7 @@ public class VMLibraryTestCase extends BaseTestCase
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR, COMPARE_DIR, "vm_library_duplicate",
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if (!isMatch(RESULT_DIR, COMPARE_DIR, "vm_library_duplicate", RESULT_FILE_EXT,CMP_FILE_EXT))
         {
             fail("Processed template did not match expected output");
         }
@@ -291,13 +289,12 @@ public class VMLibraryTestCase extends BaseTestCase
     {
         assureResultsDirectoryExists(RESULT_DIR);
 
-        FileOutputStream fos = new FileOutputStream (getFileName(
-                RESULT_DIR, "vm_library", RESULT_FILE_EXT));
+        FileOutputStream fos = new FileOutputStream (getFileName( RESULT_DIR, "vm_library", RESULT_FILE_EXT));
 
         VelocityContext context = new VelocityContext();
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        Template template = ve1.getTemplate("vm_library.vm");
+        Template template = ve1.getTemplate("/macrolibs/vm_library.vm");
         template.merge(context, writer, null);
 
         /**
@@ -309,8 +306,7 @@ public class VMLibraryTestCase extends BaseTestCase
         /**
          * outputs the macro calls
          */
-        if (!isMatch(RESULT_DIR, COMPARE_DIR, "vm_library",
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if (!isMatch(RESULT_DIR, COMPARE_DIR, "vm_library", RESULT_FILE_EXT,CMP_FILE_EXT))
         {
             fail("Processed template did not match expected output");
         }

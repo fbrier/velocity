@@ -15,14 +15,11 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.test.BaseTestCase;
 
 /**
@@ -74,7 +71,7 @@ public class Velocity580TestCase extends BaseTestCase
 
         engine = new VelocityEngine();
         
-        engine.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, TEMPLATE_DIR);
+//        engine.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, TEMPLATE_DIR);
 
 //        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
@@ -83,12 +80,12 @@ public class Velocity580TestCase extends BaseTestCase
 
     public void testVelocity580() throws Exception
     {
-        executeTest("velocity580.vm");
+        executeTest("velocity580.vm", TEMPLATE_DIR);
     }
 
-    protected Template executeTest(final String templateName) throws Exception
+    protected Template executeTest(final String templateName, String templateDir ) throws Exception
     {
-        Template template = engine.getTemplate(templateName);
+        Template template = engine.getTemplate(templateDir + "/" + templateName);
 
         FileOutputStream fos = new FileOutputStream(getFileName(RESULTS_DIR, templateName, RESULT_FILE_EXT));
 
@@ -106,7 +103,7 @@ public class Velocity580TestCase extends BaseTestCase
             StringWriter out = new StringWriter();
             template.merge(context, out);
 
-            String compare = getFileContents(COMPARE_DIR, templateName, CMP_FILE_EXT);
+            String compare = getResourceContents(COMPARE_DIR, templateName, CMP_FILE_EXT);
 
             fail("Output incorrect for Template: " + templateName + ": \""+out+"\""+
                  "; it did not match: \""+compare+"\"");

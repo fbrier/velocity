@@ -73,6 +73,7 @@ public class VelTools66TestCase extends BaseTestCase
 
 
         RuntimeInstance ri = new RuntimeInstance();
+        ri.init();
         Introspector introspector = ri.getIntrospector();
 
         Method testMethod = introspector.getMethod(TestObject.class, "getTestValue", new Object[0]);

@@ -66,12 +66,12 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         VelocityEngine ve = createEngine(true, true);
 
         // render twice to make sure there is no difference with cached templates
-        testParseMacro(ve, "vm_library1.vm", "parseMacro1_1", false);
-        testParseMacro(ve, "vm_library1.vm", "parseMacro1_1", false);
+        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_1", false);
+        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_1", false);
         
         // run again with different macro library
-        testParseMacro(ve, "vm_library2.vm", "parseMacro1_1b", false);
-        testParseMacro(ve, "vm_library2.vm", "parseMacro1_1b", false);
+        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_1b", false);
+        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_1b", false);
     }
 
     /**
@@ -85,10 +85,10 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
          */
         VelocityEngine ve = createEngine(false, true);
 
-        testParseMacro(ve, "vm_library1.vm", "parseMacro1_2", true);
+        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_2", true);
 
         // run again with different macro library
-        testParseMacro(ve, "vm_library2.vm", "parseMacro1_2b", true);
+        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_2b", true);
     }
 
     public void testParseMacroGlobalCacheOn()
@@ -100,12 +100,12 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         VelocityEngine ve = createEngine(true, false);
 
         // render twice to make sure there is no difference with cached templates
-        testParseMacro(ve, "vm_library1.vm", "parseMacro1_3", false);
-        testParseMacro(ve, "vm_library1.vm", "parseMacro1_3", false);
+        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_3", false);
+        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_3", false);
 
         // run again with different macro library
-        testParseMacro(ve, "vm_library2.vm", "parseMacro1_3b", false);
-        testParseMacro(ve, "vm_library2.vm", "parseMacro1_3b", false);
+        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_3b", false);
+        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_3b", false);
     }
     
     public void testParseMacroGlobalCacheOff()
@@ -116,10 +116,10 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
          */
         VelocityEngine ve = createEngine(false, false);
 
-        testParseMacro(ve, "vm_library1.vm", "parseMacro1_4", true);
+        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_4", true);
         
         // run again with different macro library
-        testParseMacro(ve, "vm_library2.vm", "parseMacro1_4b", true);
+        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_4b", true);
 
     }
     
@@ -143,7 +143,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        Template template = ve.getTemplate("parseMacro1.vm");
+        Template template = ve.getTemplate("/parsemacros/parseMacro1.vm");
         template.merge(context, writer);
 
         /**
@@ -171,8 +171,8 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
          */
         if (testCachingOff)
         {
-            Template t1 = ve.getTemplate("parseMacro1.vm");
-            Template t2 = ve.getTemplate("parseMacro1.vm");
+            Template t1 = ve.getTemplate("/parsemacros/parseMacro1.vm");
+            Template t2 = ve.getTemplate("/parsemacros/parseMacro1.vm");
 
             assertNotSame("Different objects", t1, t2);
         }
@@ -189,10 +189,10 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         ve.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
         ve.setProperty("velocimacro.permissions.allow.inline.to.replace.global",
                 new Boolean(local));
-        ve.setProperty("file.resource.loader.cache", new Boolean(cache));
+        ve.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, new Boolean(cache));
 //        ve.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
+        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
+//        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
         ve.init();
         
         return ve;
@@ -216,10 +216,10 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         ve1.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
         ve1.setProperty("velocimacro.permissions.allow.inline.to.replace.global",
                 Boolean.FALSE);
-        ve1.setProperty("file.resource.loader.cache", Boolean.TRUE);
+        ve1.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE);
 //        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
+        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
+//        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
         ve1.init();
         
         assureResultsDirectoryExists(RESULT_DIR);
@@ -231,7 +231,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        Template template = ve1.getTemplate("parseMacro2.vm");
+        Template template = ve1.getTemplate("/parsemacros/parseMacro2.vm");
         template.merge(context, writer);
 
         /**
@@ -264,10 +264,10 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         ve1.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
         ve1.setProperty("velocimacro.permissions.allow.inline.to.replace.global",
                 Boolean.FALSE);
-        ve1.setProperty("file.resource.loader.cache", Boolean.TRUE);
+        ve1.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE);
 //        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
+        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
+//        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
         ve1.init();
         
         assureResultsDirectoryExists(RESULT_DIR);
@@ -279,7 +279,7 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
-        Template template = ve1.getTemplate("parseMacro3.vm");
+        Template template = ve1.getTemplate("/parsemacros/parseMacro3.vm");
         template.merge(context, writer);
 
         /**

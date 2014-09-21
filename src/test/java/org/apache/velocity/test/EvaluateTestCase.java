@@ -63,7 +63,7 @@ public class EvaluateTestCase extends BaseTestCase
     * Path for templates. This property will override the
     * value in the default velocity properties file.
     */
-   private final static String FILE_RESOURCE_LOADER_PATH = "/evaluate";
+   private final static String CLASSPATH_RESOURCE_LOADER_PATH = "/evaluate";
 
    /**
     * Results relative to the build directory.
@@ -258,7 +258,7 @@ public class EvaluateTestCase extends BaseTestCase
     {
         logger.info("Test file: "+basefilename);
         VelocityEngine ve = engine;
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+//        ve.addProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_PATH, CLASSPATH_RESOURCE_LOADER_PATH);
      
         for (Iterator i = properties.keySet().iterator(); i.hasNext();)
         {
@@ -274,7 +274,7 @@ public class EvaluateTestCase extends BaseTestCase
         FileOutputStream fos;
         Writer fwriter;
         
-        template = ve.getTemplate( getFileName(null, basefilename, TMPL_FILE_EXT) );
+        template = ve.getTemplate( getFileName(CLASSPATH_RESOURCE_LOADER_PATH, basefilename, TMPL_FILE_EXT) );
         
         fos = new FileOutputStream (
                 getFileName(RESULTS_DIR, basefilename, RESULT_FILE_EXT));
@@ -288,7 +288,7 @@ public class EvaluateTestCase extends BaseTestCase
         if (!isMatch(RESULTS_DIR, COMPARE_DIR, basefilename, RESULT_FILE_EXT, CMP_FILE_EXT))
         {
             String result = getFileContents(RESULTS_DIR, basefilename, RESULT_FILE_EXT);
-            String compare = getFileContents(COMPARE_DIR, basefilename, CMP_FILE_EXT);
+            String compare = getResourceContents( COMPARE_DIR, basefilename, CMP_FILE_EXT );
 
             String msg = "Output was incorrect\n"+
                 "-----Result-----\n"+ result +

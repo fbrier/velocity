@@ -28,6 +28,7 @@ import junit.framework.TestSuite;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 /**
  * Test resource caching related issues.
@@ -74,7 +75,7 @@ public class ResourceCachingTestCase extends BaseTestCase
 
         VelocityEngine ve = new VelocityEngine();
 
-        ve.setProperty("file.resource.loader.cache", "true");
+        ve.setProperty( RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, "true");
         ve.setProperty("file.resource.loader.path", FILE_RESOURCE_LOADER_PATH);
         ve.init();
 

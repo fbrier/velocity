@@ -302,7 +302,8 @@ public class Include extends InputBase
                 if ( null != currentResource )
                 {
                     String curResourceName = currentResource.getName().trim();
-                    int fileSepIndex = curResourceName.lastIndexOf( File.separatorChar );
+                    char separator = currentResource.getResourceLoader().getClassName().equals( "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader") ? '/' : File.separatorChar;
+                    int fileSepIndex = curResourceName.lastIndexOf( separator );
                     if (fileSepIndex > 0 )
                     {
                         // Current resource path needs to be prepended to includeResourcePath

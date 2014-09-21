@@ -47,8 +47,7 @@ public class CommonsExtPropTestCase extends BaseTestCase
     /**
      * Results directory.
      */
-    private static final String RESULTS_DIR =
-        TEST_RESULT_DIR + "/configuration";
+    private static final String RESULTS_DIR = TEST_RESULT_DIR + "/configuration";
 
     /**
      * Test configuration
@@ -77,10 +76,11 @@ public class CommonsExtPropTestCase extends BaseTestCase
     {
             assureResultsDirectoryExists(RESULTS_DIR);
 
-            ExtendedProperties c = new ExtendedProperties(TEST_CONFIG);
+            // getClass().getResource( TEST_CONFIG ).getFile();
+            ExtendedProperties c = new ExtendedProperties( getClass().getResource( TEST_CONFIG ).getFile() );
+            // c.load( getClass().getResourceAsStream( TEST_CONFIG )  );
 
-            FileWriter result = new FileWriter(
-                getFileName(RESULTS_DIR, "output", "res"));
+            FileWriter result = new FileWriter( getFileName( RESULTS_DIR, "output", "res"));
 
             message(result, "Testing order of keys ...");
             showIterator(result, c.getKeys());

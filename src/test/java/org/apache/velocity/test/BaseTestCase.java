@@ -451,7 +451,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         return result.equals(compare);
     }
 
-    private String getResourceContents( String dir, String baseFileName, String ext )
+    protected String getResourceContents( String dir, String baseFileName, String ext )
     {
         StringBuffer buf = new StringBuffer();
         if ( ( null != dir ) && ! dir.isEmpty() )
@@ -467,7 +467,8 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         }
 
         getClass().getResourceAsStream( buf.toString() );
-        return new Scanner( getClass().getResourceAsStream( buf.toString() ) ).useDelimiter( "\\Z" ).next();
+        Scanner scanner = new Scanner( getClass().getResourceAsStream( buf.toString() ) ).useDelimiter( "\\Z" );
+        return scanner.hasNext() ? scanner.next() : "";
     }
 
     /**

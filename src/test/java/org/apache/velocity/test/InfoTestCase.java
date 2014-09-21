@@ -20,13 +20,10 @@ package org.apache.velocity.test;
  */
 
 import java.io.StringWriter;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.test.misc.UberspectTestException;
@@ -62,11 +59,9 @@ public class InfoTestCase extends BaseTestCase implements TemplateTestBase
     public void setUp() throws Exception
     {
         ve = new VelocityEngine();
-        ve.setProperty(
-                "runtime.introspector.uberspect", "org.apache.velocity.test.misc.UberspectTestImpl");
+        ve.setProperty( "runtime.introspector.uberspect", "org.apache.velocity.test.misc.UberspectTestImpl");
 
-        ve.setProperty(
-                Velocity.FILE_RESOURCE_LOADER_PATH, "test/info");
+//        ve.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, "test/info");
 
         ve.init();
     }
@@ -76,13 +71,13 @@ public class InfoTestCase extends BaseTestCase implements TemplateTestBase
     public void testInfoProperty() throws Exception
     {
         // check property
-        checkInfo("info1.vm", 1, 7);
+        checkInfo("info/info1.vm", 1, 7);
     }
 
     public void testInfoMethod() throws Exception
     {
         // check method
-        checkInfo("info2.vm", 1, 7);
+        checkInfo("info/info2.vm", 1, 7);
     }
 
     public void checkInfo(String templateName,

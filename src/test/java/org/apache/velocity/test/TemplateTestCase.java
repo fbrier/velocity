@@ -91,11 +91,12 @@ public class TemplateTestCase extends BaseTestCase implements TemplateTestBase
         this.baseFileName = baseFileName;
     }
 
+/*
     public static junit.framework.Test suite()
     {
         return new TemplateTestSuite();
     }
-
+*/
     /**
      * Sets up the test.
      */
