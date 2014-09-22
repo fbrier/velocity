@@ -65,7 +65,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
     * Path for templates. This property will override the
     * value in the default velocity properties file.
     */
-   private final static String CLASSPATH_RESOURCE_LOADER_PATH = "/includeevent/";
+   private final static String testDir = "/includeevent";
 
    /**
     * Results relative to the build directory.
@@ -120,7 +120,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
         ve.setProperty(RuntimeConstants.EVENTHANDLER_NULLSET, sequence1);
         ve.setProperty(RuntimeConstants.EVENTHANDLER_REFERENCEINSERTION, sequence1);
         ve.setProperty(RuntimeConstants.EVENTHANDLER_INCLUDE, sequence1);
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( testDir, "test4", TMPL_FILE_EXT ));
         ve.init();
 
         VelocityEngine ve2 = new VelocityEngine();
@@ -129,6 +129,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
         ve2.setProperty(RuntimeConstants.EVENTHANDLER_NULLSET, sequence2);
         ve2.setProperty(RuntimeConstants.EVENTHANDLER_REFERENCEINSERTION, sequence2);
         ve2.setProperty(RuntimeConstants.EVENTHANDLER_INCLUDE, sequence2);
+        ve2.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( testDir, "test4", TMPL_FILE_EXT ));
         ve2.init();
 
         VelocityContext context;
@@ -207,7 +208,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
         FileOutputStream fos;
         Writer fwriter;
 
-        template = ve.getTemplate( getFileName(null, CLASSPATH_RESOURCE_LOADER_PATH + "test4", TMPL_FILE_EXT) );
+        template = ve.getTemplate( getFileName( testDir, "test4", TMPL_FILE_EXT) );
 
         fos = new FileOutputStream (
                 getFileName(RESULTS_DIR, "test4", RESULT_FILE_EXT));
@@ -225,7 +226,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
         }
 
         // sequence 2
-        template = ve2.getTemplate( getFileName(null, CLASSPATH_RESOURCE_LOADER_PATH + "test5", TMPL_FILE_EXT) );
+        template = ve2.getTemplate( getFileName(testDir, "test5", TMPL_FILE_EXT) );
 
         fos = new FileOutputStream (
                 getFileName(RESULTS_DIR, "test5", RESULT_FILE_EXT));

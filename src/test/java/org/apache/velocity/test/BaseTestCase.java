@@ -468,7 +468,12 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
 
         getClass().getResourceAsStream( buf.toString() );
         Scanner scanner = new Scanner( getClass().getResourceAsStream( buf.toString() ) ).useDelimiter( "\\z" );
-        return scanner.hasNext() ? scanner.next() : "";
+        StringBuffer contents = new StringBuffer();
+        while ( scanner.hasNext() )
+        {
+            contents.append( scanner.next() );
+        }
+        return contents.toString();
     }
 
     /**
@@ -483,5 +488,12 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         name.append(Character.toTitleCase(s.charAt(0)));
         name.append(s.substring(1, s.length()).toLowerCase());
         return name.toString();
+    }
+
+    protected String calcPathToTestDirectory( String path, String knownFile, String ext )
+    {
+        String file = getClass().getResource( getFileName( path, knownFile, ext) ).getFile();
+        return  file.substring( 0, file.lastIndexOf( File.separator ) );
+
     }
 }

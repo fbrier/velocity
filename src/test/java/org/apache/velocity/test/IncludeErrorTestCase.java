@@ -31,8 +31,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-
-
+import org.apache.velocity.runtime.RuntimeConstants;
 
 
 /**
@@ -62,8 +61,9 @@ public class IncludeErrorTestCase extends BaseTestCase implements TemplateTestBa
     public void setUp() throws Exception
     {
         ve = new VelocityEngine();
-        ve.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, "test/includeerror");
-
+        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,string,classpath");
+        ve.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, "/includeerror");
+        ve.setProperty( RuntimeConstants.EVENTHANDLER_INCLUDE, "org.apache.velocity.app.event.implement.IncludeRelativePath");
         ve.init();
     }
 
@@ -111,7 +111,7 @@ public class IncludeErrorTestCase extends BaseTestCase implements TemplateTestBa
         }
         catch (Exception E)
         {
-            assertTrue(exceptionClass.isAssignableFrom(E.getClass()));
+            assertTrue(exceptionClass.getName().equals( E.getClass().getName() ));
         }
         finally
         {

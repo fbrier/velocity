@@ -73,7 +73,7 @@ public class BuiltInEventHandlerTestCase extends BaseTestCase {
     * Path for templates. This property will override the
     * value in the default velocity properties file.
     */
-   private final static String FILE_RESOURCE_LOADER_PATH = "/includeevent";
+   private final static String TEST_DIR = "/includeevent";
 
    /**
     * Results relative to the build directory.
@@ -85,6 +85,8 @@ public class BuiltInEventHandlerTestCase extends BaseTestCase {
     */
    private static final String COMPARE_DIR = "/includeevent/compare";
 
+    private String testDirPath;
+
     /**
      * Default constructor.
      */
@@ -95,7 +97,8 @@ public class BuiltInEventHandlerTestCase extends BaseTestCase {
 
     public void setUp() throws Exception
     {
-        assureResultsDirectoryExists(RESULTS_DIR);
+        testDirPath = calcPathToTestDirectory( TEST_DIR, "test6", TMPL_FILE_EXT );
+                assureResultsDirectoryExists(RESULTS_DIR);
         super.setUp();
     }
 
@@ -363,7 +366,7 @@ public class BuiltInEventHandlerTestCase extends BaseTestCase {
     {
         VelocityEngine ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.EVENTHANDLER_INCLUDE, "org.apache.velocity.app.event.implement.IncludeNotFound");
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, testDirPath );
         ve.init();
 
         Template template;
@@ -404,7 +407,7 @@ public class BuiltInEventHandlerTestCase extends BaseTestCase {
     {
         VelocityEngine ve = new VelocityEngine();
         ve.setProperty(RuntimeConstants.EVENTHANDLER_INCLUDE, "org.apache.velocity.app.event.implement.IncludeRelativePath");
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, testDirPath);
         ve.init();
 
         Template template;
