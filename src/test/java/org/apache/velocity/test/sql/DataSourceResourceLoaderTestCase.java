@@ -64,16 +64,16 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
      * String (not containing any VTL) used to test unicode
      */
     private String UNICODE_TEMPLATE = "\\u00a9 test \\u0410 \\u0411";
-    
+
     /**
      * Name of template for testing unicode.
      */
     private String UNICODE_TEMPLATE_NAME = "testUnicode";
 
     VelocityEngine engine;
-    
-    public DataSourceResourceLoaderTestCase(final String name)
-    	throws Exception
+
+    public DataSourceResourceLoaderTestCase( final String name )
+            throws Exception
     {
         super( name );
 /*
@@ -81,7 +81,7 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
                 "--url",  "jdbc:hsqldb:.", "--noexit"
         });
 */
-        init( calcPathToTestDirectory( DATA_PATH,  "create-db", "sql" ) );
+        init( calcPathToTestDirectory( DATA_PATH, "create-db", "sql" ) );
         setUpUnicode();
     }
 
@@ -94,35 +94,34 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
 
     public void setUp() throws Exception
     {
+        assureResultsDirectoryExists( RESULTS_DIR );
 
-        assureResultsDirectoryExists(RESULTS_DIR);
-
-	    DataSource ds = new HsqlDataSource("jdbc:hsqldb:.");
+        DataSource ds = new HsqlDataSource( "jdbc:hsqldb:." );
 
         DataSourceResourceLoader rl = new DataSourceResourceLoader();
-        rl.setDataSource(ds);
+        rl.setDataSource( ds );
 
         engine = new VelocityEngine();
-        
+
         // pass in an instance to Velocity
         engine.addProperty( "resource.loader", "ds" );
         engine.setProperty( "ds.resource.loader.instance", rl );
 
-        engine.setProperty( "ds.resource.loader.resource.table",           "velocity_template");
-        engine.setProperty( "ds.resource.loader.resource.keycolumn",       "id");
-        engine.setProperty( "ds.resource.loader.resource.templatecolumn",  "def");
-        engine.setProperty( "ds.resource.loader.resource.timestampcolumn", "timestamp");
+        engine.setProperty( "ds.resource.loader.resource.table", "velocity_template" );
+        engine.setProperty( "ds.resource.loader.resource.keycolumn", "id" );
+        engine.setProperty( "ds.resource.loader.resource.templatecolumn", "def" );
+        engine.setProperty( "ds.resource.loader.resource.timestampcolumn", "timestamp" );
 
 //        Velocity.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }
-    
+
     public void setUpUnicode() throws Exception
     {
         String insertString = "insert into velocity_template  (id, timestamp, def) VALUES " +
-        		"( '" + UNICODE_TEMPLATE_NAME + "', NOW(), '" + UNICODE_TEMPLATE + "');";
-        executeSQL(insertString);
+                "( '" + UNICODE_TEMPLATE_NAME + "', NOW(), '" + UNICODE_TEMPLATE + "');";
+        executeSQL( insertString );
     }
 
     /**
@@ -131,25 +130,25 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
      */
     public void testSimpleTemplate() throws Exception
     {
-        Template t = executeTest("testTemplate1");
-        assertFalse("Timestamp is 0", 0 == t.getLastModified());
+        Template t = executeTest( "testTemplate1" );
+        assertFalse( "Timestamp is 0", 0 == t.getLastModified() );
     }
 
     public void testUnicode() throws Exception
     {
-        Template template = engine.getTemplate(UNICODE_TEMPLATE_NAME);
+        Template template = engine.getTemplate( UNICODE_TEMPLATE_NAME );
 
         Writer writer = new StringWriter();
         VelocityContext context = new VelocityContext();
-        template.merge(context, writer);
+        template.merge( context, writer );
         writer.flush();
         writer.close();
 
         String outputText = writer.toString();
-        
-        if (!normalizeNewlines(UNICODE_TEMPLATE).equals( normalizeNewlines( outputText ) ))
+
+        if ( !normalizeNewlines( UNICODE_TEMPLATE ).equals( normalizeNewlines( outputText ) ) )
         {
-            fail("Output incorrect for Template: " + UNICODE_TEMPLATE_NAME);
+            fail( "Output incorrect for Template: " + UNICODE_TEMPLATE_NAME );
         }
     }
 
@@ -159,8 +158,8 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
      */
     public void testRenderTool() throws Exception
     {
-	Template t = executeTest("testTemplate2");
-        assertFalse("Timestamp is 0", 0 == t.getLastModified());
+        Template t = executeTest( "testTemplate2" );
+        assertFalse( "Timestamp is 0", 0 == t.getLastModified() );
     }
 
     /**
@@ -168,8 +167,8 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
      */
     public void testNullTimestamp() throws Exception
     {
-        Template t = executeTest("testTemplate3");
-        assertEquals("Timestamp is not 0", 0, t.getLastModified());
+        Template t = executeTest( "testTemplate3" );
+        assertEquals( "Timestamp is not 0", 0, t.getLastModified() );
     }
 
     /**
@@ -177,31 +176,29 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
      */
     public void testMacroInvocation() throws Exception
     {
-        Template t = executeTest("testTemplate4");
-        assertFalse("Timestamp is 0", 0 == t.getLastModified());
+        Template t = executeTest( "testTemplate4" );
+        assertFalse( "Timestamp is 0", 0 == t.getLastModified() );
     }
 
-    protected Template executeTest(final String templateName) throws Exception
+    protected Template executeTest( final String templateName ) throws Exception
     {
-        Template template = engine.getTemplate(templateName);
+        Template template = engine.getTemplate( templateName );
 
         FileOutputStream fos =
-                new FileOutputStream (
-                        getFileName(RESULTS_DIR, templateName, RESULT_FILE_EXT));
+                new FileOutputStream( getFileName( RESULTS_DIR, templateName, RESULT_FILE_EXT ) );
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos ) );
 
         VelocityContext context = new VelocityContext();
-        context.put("tool", new DSRLTCTool());
+        context.put( "tool", new DSRLTCTool() );
 
-        template.merge(context, writer);
+        template.merge( context, writer );
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULTS_DIR, COMPARE_DIR, templateName,
-                        RESULT_FILE_EXT, CMP_FILE_EXT))
+        if ( !isMatch( RESULTS_DIR, COMPARE_DIR, templateName, RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output incorrect for Template: " + templateName);
+            fail( "Output incorrect for Template: " + templateName );
         }
 
         return template;
@@ -209,14 +206,14 @@ public class DataSourceResourceLoaderTestCase extends BaseSQLTest
 
     public static final class DSRLTCTool
     {
-	public int add(final int a, final int b)
-	{
-	    return a + b;
-	}
+        public int add( final int a, final int b )
+        {
+            return a + b;
+        }
 
-	public String getMessage()
-	{
-	    return "And the result is:";
-	}
+        public String getMessage()
+        {
+            return "And the result is:";
+        }
     }
 }
