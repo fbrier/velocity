@@ -115,7 +115,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
          * Set up two VelocityEngines that will apply the handlers in both orders
          */
         VelocityEngine ve = new VelocityEngine();
-        ve.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, this);
+//        ve.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, this);
         ve.setProperty(RuntimeConstants.EVENTHANDLER_METHODEXCEPTION, sequence1);
         ve.setProperty(RuntimeConstants.EVENTHANDLER_NULLSET, sequence1);
         ve.setProperty(RuntimeConstants.EVENTHANDLER_REFERENCEINSERTION, sequence1);
@@ -124,7 +124,7 @@ public class FilteredEventHandlingTestCase extends BaseTestCase
         ve.init();
 
         VelocityEngine ve2 = new VelocityEngine();
-        ve2.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, this);
+//        ve2.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, this);
         ve2.setProperty(RuntimeConstants.EVENTHANDLER_METHODEXCEPTION, sequence2);
         ve2.setProperty(RuntimeConstants.EVENTHANDLER_NULLSET, sequence2);
         ve2.setProperty(RuntimeConstants.EVENTHANDLER_REFERENCEINSERTION, sequence2);
