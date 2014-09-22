@@ -25,9 +25,11 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.apache.commons.collections.ExtendedProperties;
@@ -270,6 +272,52 @@ public class RuntimeInstance implements RuntimeConstants, RuntimeServices
             initializing = false;
         }
     }
+
+    /**
+     * Todo: These will probably have to be made thread-safe at some point.
+     */
+    List<VelocityListener> listenToEverything = new ArrayList<VelocityListener>();
+    HashMap<String,List<VelocityListener>> listenToClasses = new HashMap<String,List<VelocityListener>>();
+
+    /** Adding listeners is to initially eliminate the use of the logging framework for tests.  However, it should be
+     * useful to be able to add events that would notify when template processing finished, or an error occurred.
+     *
+     * Todo: Need unit tests for listeners - although the unit tests use this feature.
+     *
+     * @param listener
+     */
+    public void addVelocityListener( VelocityListener listener )
+    {
+        String [] targetClasses = listener.getTargetClasses();
+        if ( null == targetClasses )
+            listenToEverything.add( listener );
+        else
+        {
+            for ( String targetClass : targetClasses )
+            {
+                List<VelocityListener> target = listenToClasses.get( targetClass );
+                if ( null == target )
+                {
+                    target = new ArrayList<VelocityListener>();
+                    listenToClasses.put( targetClass, target );
+                }
+                target.add( listener );
+            }
+        }
+    }
+
+    public EventSourceManager createEventSourceManager( Object source )
+    {
+        String fqcn = source.getClass().getName();
+        List<VelocityListener> velocityListeners = listenToClasses.get( fqcn );
+        if ( null == velocityListeners )
+        {
+            velocityListeners = new ArrayList<VelocityListener>();
+            listenToClasses.put( fqcn, velocityListeners );
+        }
+        return new EventSourceManager( source, listenToEverything, velocityListeners);
+    }
+
 
     /**
      * Returns true if the RuntimeInstance has been successfully initialized.

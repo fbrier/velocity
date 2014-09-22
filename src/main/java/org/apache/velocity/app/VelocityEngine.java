@@ -35,6 +35,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
+import org.apache.velocity.runtime.VelocityListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,12 +120,21 @@ public class VelocityEngine implements RuntimeConstants
         ri.init(p);
     }
 
-    /**
-     * Set a Velocity Runtime property.
-     *
-     * @param  key
-     * @param  value
+    /** Adding listeners is to initially eliminate the use of the logging framework for tests.  However, it should be
+     * useful to be able to add events that would notify when template processing finished, or an error occurred.
+     * @param listener
      */
+    public void addVelocityListener( VelocityListener listener )
+    {
+        ri.addVelocityListener( listener );
+    }
+
+        /**
+         * Set a Velocity Runtime property.
+         *
+         * @param  key
+         * @param  value
+         */
     public void setProperty(String key, Object value)
     {
         ri.setProperty(key,value);

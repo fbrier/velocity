@@ -145,6 +145,8 @@ public interface RuntimeServices
      */
     public void init(String configurationFile);
 
+    public EventSourceManager createEventSourceManager( Object source );
+
     /**
      * Wraps the String in a StringReader and passes it off to
      * {@link #parse(Reader,String)}.

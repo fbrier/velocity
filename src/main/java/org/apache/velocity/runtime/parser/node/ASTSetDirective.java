@@ -25,6 +25,7 @@ import org.apache.velocity.app.event.EventHandlerUtil;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.TemplateInitException;
+import org.apache.velocity.runtime.EventSourceManager;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.parser.Parser;
 import org.apache.velocity.util.Formatter;
@@ -49,6 +50,7 @@ public class ASTSetDirective extends SimpleNode
     boolean logOnNull = false;
     private boolean allowNull = false;
     private boolean isInitialized;
+    private EventSourceManager eventSourceManager = null;
 
     /**
      *  This is really immutable after the init, so keep one for this node
@@ -75,6 +77,7 @@ public class ASTSetDirective extends SimpleNode
     public ASTSetDirective(Parser p, int id)
     {
         super(p, id);
+        eventSourceManager = p.getRuntimeServices().createEventSourceManager( this );
     }
 
     /**
@@ -160,9 +163,9 @@ public class ASTSetDirective extends SimpleNode
                 {
                     boolean doit = EventHandlerUtil.shouldLogOnNullSet( rsvc, context, left.literal(), right.literal() );
 
-                    if (doit && logger.isDebugEnabled())
+                    if (doit && (null != eventSourceManager) && eventSourceManager.hasListeners())
                     {
-                        logger.debug( "RHS of #set statement is null. Context will not be modified. "
+                        eventSourceManager.notify( "RHS of #set statement is null. Context will not be modified. "
                                 + Formatter.formatFileString( this ) );
                     }
                 }

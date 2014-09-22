@@ -90,6 +90,15 @@ public class Parser implements ParserTreeConstants, ParserConstants
         rsvc = rs;
     }
 
+    /** Parser needs this to be able to tie into listener architecture
+     *
+     * @return
+     */
+    public RuntimeServices getRuntimeServices()
+    {
+        return rsvc;
+    }
+
     /**
      * This was also added to allow parsers to be
      * re-usable. Normal JavaCC use entails passing an
