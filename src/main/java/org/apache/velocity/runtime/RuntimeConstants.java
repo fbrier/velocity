@@ -195,8 +195,18 @@ public interface RuntimeConstants
     /** The public handle for turning the caching on in the FileResourceLoader. */
     String FILE_RESOURCE_LOADER_CACHE = "file.resource.loader.cache";
 
+    /** The public handle for specifying the class of the ClasspathResourceLoader. */
+    String CLASSPATH_RESOURCE_LOADER_CLASS = "classpath.resource.loader.class";
+
     /** The public handle for turning the caching on in the ClasspathResourceLoader. */
     String CLASSPATH_RESOURCE_LOADER_CACHE = "classpath.resource.loader.cache";
+
+    /** The public handle for specifying the class of the JarResourceLoader. */
+    String JAR_RESOURCE_LOADER_CLASS = "jar.resource.loader.class";
+
+    /** The public handle for setting a path in the JarResourceLoader. */
+    String JAR_RESOURCE_LOADER_PATH = "jar.resource.loader.path";
+
 
     /** The public handle for setting a path in the ClasspathResourceLoader. */
 //    String CLASSPATH_RESOURCE_LOADER_PATH = "classpath.resource.loader.path";

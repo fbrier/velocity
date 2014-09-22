@@ -467,7 +467,7 @@ public abstract class BaseTestCase extends TestCase implements TemplateTestBase
         }
 
         getClass().getResourceAsStream( buf.toString() );
-        Scanner scanner = new Scanner( getClass().getResourceAsStream( buf.toString() ) ).useDelimiter( "\\Z" );
+        Scanner scanner = new Scanner( getClass().getResourceAsStream( buf.toString() ) ).useDelimiter( "\\z" );
         return scanner.hasNext() ? scanner.next() : "";
     }
 
