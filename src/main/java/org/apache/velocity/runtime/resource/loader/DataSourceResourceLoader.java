@@ -239,7 +239,7 @@ public class DataSourceResourceLoader extends ResourceLoader
 
             if (rs.next())
             {
-                InputStream stream = rs.getBinaryStream(templateColumn);
+                InputStream stream = rs.getAsciiStream( templateColumn );
                 if (stream == null)
                 {
                     throw new ResourceNotFoundException("DataSourceResourceLoader: "

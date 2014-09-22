@@ -34,24 +34,26 @@ import org.apache.velocity.test.BaseTestCase;
  * @version $Id: BaseSQLTest.java 898032 2010-01-11 19:51:03Z nbubna $
  */
 
-public abstract class BaseSQLTest
-        extends BaseTestCase
+public abstract class BaseSQLTest extends BaseTestCase
 {
     private static HsqlDB hsqlDB = null;
+    protected String dataPath;
 
-    public BaseSQLTest(String name, String path)
-            throws Exception
+    public BaseSQLTest(String name)
     {
         super(name);
+    }
 
+    public void init( String dataPath ) throws Exception
+    {
+        this.dataPath = dataPath;
         if (hsqlDB == null)
         {
-            hsqlDB = new HsqlDB("jdbc:hsqldb:.", path + "/create-db.sql");
+            hsqlDB = new HsqlDB("jdbc:hsqldb:.", getFileName( dataPath, "create-db", "sql" ) );
         }
     }
-    
-    public void executeSQL(String sql)
-    throws SQLException
+
+    public void executeSQL(String sql) throws SQLException
     {
         Connection connection = hsqlDB.getConnection();
         Statement statement = connection.createStatement();

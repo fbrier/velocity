@@ -26,16 +26,13 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.DataSourceResourceLoader;
 
 
-public class DataSourceResourceLoaderTestCase
-        extends BaseSQLTest
+public class DataSourceResourceLoaderTestCase extends BaseSQLTest
 {
     /**
      * Comparison file extension.
@@ -78,17 +75,24 @@ public class DataSourceResourceLoaderTestCase
     public DataSourceResourceLoaderTestCase(final String name)
     	throws Exception
     {
-        super(name, DATA_PATH);
+        super( name );
+/*
+        org.hsqldb.util.DatabaseManagerSwing.main(new String[] {
+                "--url",  "jdbc:hsqldb:.", "--noexit"
+        });
+*/
+        init( calcPathToTestDirectory( DATA_PATH,  "create-db", "sql" ) );
         setUpUnicode();
     }
 
+/*
     public static Test suite()
     {
         return new TestSuite(DataSourceResourceLoaderTestCase.class);
     }
+*/
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
 
         assureResultsDirectoryExists(RESULTS_DIR);
@@ -114,8 +118,7 @@ public class DataSourceResourceLoaderTestCase
         engine.init();
     }
     
-    public void setUpUnicode()
-    throws Exception
+    public void setUpUnicode() throws Exception
     {
         String insertString = "insert into velocity_template  (id, timestamp, def) VALUES " +
         		"( '" + UNICODE_TEMPLATE_NAME + "', NOW(), '" + UNICODE_TEMPLATE + "');";
@@ -126,15 +129,13 @@ public class DataSourceResourceLoaderTestCase
      * Tests loading and rendering of a simple template. If that works, we are able to get data
      * from the database.
      */
-    public void testSimpleTemplate()
-            throws Exception
+    public void testSimpleTemplate() throws Exception
     {
         Template t = executeTest("testTemplate1");
         assertFalse("Timestamp is 0", 0 == t.getLastModified());
     }
 
-    public void testUnicode()
-    throws Exception
+    public void testUnicode() throws Exception
     {
         Template template = engine.getTemplate(UNICODE_TEMPLATE_NAME);
 
@@ -146,8 +147,7 @@ public class DataSourceResourceLoaderTestCase
 
         String outputText = writer.toString();
         
-        if (!normalizeNewlines(UNICODE_TEMPLATE).equals(
-                normalizeNewlines( outputText ) ))
+        if (!normalizeNewlines(UNICODE_TEMPLATE).equals( normalizeNewlines( outputText ) ))
         {
             fail("Output incorrect for Template: " + UNICODE_TEMPLATE_NAME);
         }
@@ -157,8 +157,7 @@ public class DataSourceResourceLoaderTestCase
      * Now we have a more complex example. Run a very simple tool.
      * from the database.
      */
-    public void testRenderTool()
-            throws Exception
+    public void testRenderTool() throws Exception
     {
 	Template t = executeTest("testTemplate2");
         assertFalse("Timestamp is 0", 0 == t.getLastModified());
@@ -167,8 +166,7 @@ public class DataSourceResourceLoaderTestCase
     /**
      * Will a NULL timestamp choke the loader?
      */
-    public void testNullTimestamp()
-            throws Exception
+    public void testNullTimestamp() throws Exception
     {
         Template t = executeTest("testTemplate3");
         assertEquals("Timestamp is not 0", 0, t.getLastModified());
@@ -177,15 +175,13 @@ public class DataSourceResourceLoaderTestCase
     /**
      * Does it load the global Macros from the DB?
      */
-    public void testMacroInvocation()
-            throws Exception
+    public void testMacroInvocation() throws Exception
     {
         Template t = executeTest("testTemplate4");
         assertFalse("Timestamp is 0", 0 == t.getLastModified());
     }
 
-    protected Template executeTest(final String templateName)
-    	throws Exception
+    protected Template executeTest(final String templateName) throws Exception
     {
         Template template = engine.getTemplate(templateName);
 
