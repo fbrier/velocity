@@ -41,8 +41,8 @@ public class ResourceExistsTestCase extends BaseTestCase
     {
 try {
         velocity = new VelocityEngine();
-        velocity.setProperty("resource.loader", "file,string");
-        velocity.setProperty("file.resource.loader.path", path);
+        velocity.setProperty("resource.loader", "string,classpath");
+//        velocity.setProperty("file.resource.loader.path", path);
         velocity.setProperty("string.resource.loader.class", StringResourceLoader.class.getName());
 
         // actual instance of logger
@@ -58,7 +58,7 @@ try {
     public void testFileResourceExists() throws Exception
     {
 try {
-        if (!velocity.resourceExists("testfile.vm"))
+        if (!velocity.resourceExists(path + "/" + "testfile.vm"))
         {
             String msg = "testfile.vm was not found in path "+path;
             System.out.println(msg);
@@ -72,7 +72,7 @@ try {
             }
             fail(msg);
         }
-        if (velocity.resourceExists("nosuchfile.vm"))
+        if (velocity.resourceExists(path + "/" + "nosuchfile.vm"))
         {
             String msg = "nosuchfile.vm should not have been found in path "+path;
             System.out.println(msg);
@@ -88,7 +88,7 @@ try {
     public void testStringResourceExists() throws Exception
     {
 try {
-        assertFalse(velocity.resourceExists("foo.vm"));
+        assertFalse(velocity.resourceExists(path + "/" + "foo.vm"));
         StringResourceLoader.getRepository().putStringResource("foo.vm", "Make it so!");
         assertTrue(velocity.resourceExists("foo.vm"));
 } catch (Exception e) {

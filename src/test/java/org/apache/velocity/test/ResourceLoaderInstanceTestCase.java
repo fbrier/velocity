@@ -23,10 +23,8 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -61,7 +59,7 @@ public class ResourceLoaderInstanceTestCase extends BaseTestCase
      * Path for templates. This property will override the
      * value in the default velocity properties file.
      */
-    private final static String FILE_RESOURCE_LOADER_PATH = "/resourceinstance";
+    private final static String TEST_DIR = "/resourceinstance";
 
     /**
      * Results relative to the build directory.
@@ -90,7 +88,7 @@ public class ResourceLoaderInstanceTestCase extends BaseTestCase
         // pass in an instance to Velocity
         Velocity.setProperty( "resource.loader", "testrl" );
         Velocity.setProperty( "testrl.resource.loader.instance", rl );
-        Velocity.setProperty( "testrl.resource.loader.path", FILE_RESOURCE_LOADER_PATH );
+        Velocity.setProperty( "testrl.resource.loader.path", calcPathToTestDirectory( TEST_DIR, "testfile", TMPL_FILE_EXT ) );
 
         // actual instance of logger
 //        Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, logger);
@@ -115,14 +113,12 @@ try
 {
         assureResultsDirectoryExists(RESULTS_DIR);
 
-        Template template = RuntimeSingleton.getTemplate(
-                getFileName(null, "testfile", TMPL_FILE_EXT));
+        Template template = RuntimeSingleton.getTemplate( getFileName( null, "testfile", TMPL_FILE_EXT));
 
-        FileOutputStream fos =
-                new FileOutputStream (
-                        getFileName(RESULTS_DIR, "testfile", RESULT_FILE_EXT));
-//caveman hack to get gump to give more info
-System.out.println("All needed files exist");
+        FileOutputStream fos = new FileOutputStream ( getFileName( RESULTS_DIR, "testfile", RESULT_FILE_EXT));
+
+        //caveman hack to get gump to give more info
+        System.out.println("All needed files exist");
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
 
@@ -143,8 +139,7 @@ catch (Exception e)
     e.printStackTrace();
 }
 
-        if ( !isMatch(RESULTS_DIR, COMPARE_DIR, "testfile",
-                        RESULT_FILE_EXT, CMP_FILE_EXT) )
+        if ( !isMatch(RESULTS_DIR, COMPARE_DIR, "testfile", RESULT_FILE_EXT, CMP_FILE_EXT) )
         {
             String result = getFileContents(RESULT_DIR, "testfile", RESULT_FILE_EXT);
             String compare = getFileContents(COMPARE_DIR, "testfile", CMP_FILE_EXT);
