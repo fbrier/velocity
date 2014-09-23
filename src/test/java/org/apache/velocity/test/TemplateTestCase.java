@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.FieldMethodizer;
@@ -91,12 +90,11 @@ public class TemplateTestCase extends BaseTestCase implements TemplateTestBase
         this.baseFileName = baseFileName;
     }
 
-/*
     public static junit.framework.Test suite()
     {
         return new TemplateTestSuite();
     }
-*/
+
     /**
      * Sets up the test.
      */
@@ -187,13 +185,11 @@ public class TemplateTestCase extends BaseTestCase implements TemplateTestBase
     /**
      * Runs the test.
      */
-    public void runTest ()
-        throws Exception
+    public void runTest () throws Exception
     {
-        Template template = RuntimeSingleton.getTemplate
-            (getFileName(null, baseFileName, TMPL_FILE_EXT));
+        Template template = RuntimeSingleton.getTemplate( getFileName(null, baseFileName, TMPL_FILE_EXT));
 
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
         /* get the file to write to */
         FileOutputStream fos =
@@ -209,11 +205,10 @@ public class TemplateTestCase extends BaseTestCase implements TemplateTestBase
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,baseFileName,
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if (!isMatch(RESULT_DIR,COMPARE_DIR,baseFileName, RESULT_FILE_EXT,CMP_FILE_EXT))
         {
-            fail("Processed template "+getFileName(
-                RESULT_DIR, baseFileName, RESULT_FILE_EXT)+" did not match expected output");
+            fail( "Processed template " + getFileName( RESULT_DIR, baseFileName, RESULT_FILE_EXT) +
+                    " did not match expected output");
         }
     }
 }

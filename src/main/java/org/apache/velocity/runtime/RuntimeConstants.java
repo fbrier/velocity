@@ -198,6 +198,9 @@ public interface RuntimeConstants
     /** The public handle for specifying the class of the ClasspathResourceLoader. */
     String CLASSPATH_RESOURCE_LOADER_CLASS = "classpath.resource.loader.class";
 
+    /** The public handle for setting a path in the ClasspathResourceLoader. */
+    String CLASSPATH_RESOURCE_LOADER_PATH = "classpath.resource.loader.path";
+
     /** The public handle for turning the caching on in the ClasspathResourceLoader. */
     String CLASSPATH_RESOURCE_LOADER_CACHE = "classpath.resource.loader.cache";
 

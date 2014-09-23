@@ -60,7 +60,7 @@ public class SetTestCase extends BaseTestCase
      * Path for templates. This property will override the
      * value in the default velocity properties file.
      */
-    private final static String FILE_RESOURCE_LOADER_PATH = "/set";
+    private final static String TEST_DIR = "/set";
 
     /**
      * Results relative to the build directory.
@@ -94,15 +94,14 @@ public class SetTestCase extends BaseTestCase
     /**
      * Runs the test.
      */
-    public void testSetNull()
-            throws Exception
+    public void testSetNull() throws Exception
     {
         /**
          * Check that #set does not accept nulls
          */
-
+        String testDir = calcPathToTestDirectory( TEST_DIR, "set1", TMPL_FILE_EXT );
         VelocityEngine ve = new VelocityEngine();
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, testDir );
         ve.init();
 
         checkTemplate(ve,"set1");
@@ -112,7 +111,7 @@ public class SetTestCase extends BaseTestCase
          */
         ve = new VelocityEngine();
         ve.addProperty(RuntimeConstants.SET_NULL_ALLOWED, "false");
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, testDir );
         ve.init();
 
         checkTemplate(ve,"set1");
@@ -122,14 +121,13 @@ public class SetTestCase extends BaseTestCase
          */
         ve = new VelocityEngine();
         ve.addProperty(RuntimeConstants.SET_NULL_ALLOWED, "true");
-        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+        ve.addProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, testDir );
         ve.init();
 
         checkTemplate(ve,"set2");
     }
 
-    public void checkTemplate(VelocityEngine ve, String templateName)
-    throws Exception
+    public void checkTemplate(VelocityEngine ve, String templateName) throws Exception
     {
         Template template;
         FileOutputStream fos;
@@ -138,8 +136,7 @@ public class SetTestCase extends BaseTestCase
 
         template = ve.getTemplate( getFileName(null, templateName, TMPL_FILE_EXT) );
 
-        fos = new FileOutputStream (
-                getFileName(RESULTS_DIR, templateName, RESULT_FILE_EXT));
+        fos = new FileOutputStream ( getFileName( RESULTS_DIR, templateName, RESULT_FILE_EXT));
 
         fwriter = new BufferedWriter( new OutputStreamWriter(fos) );
 

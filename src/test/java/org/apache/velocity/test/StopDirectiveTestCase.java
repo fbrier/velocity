@@ -34,7 +34,7 @@ public class StopDirectiveTestCase extends BaseTestCase
     public void setUp() throws Exception
     {
         super.setUp();
-        engine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "test/stop/");
+        engine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( "/stop", "stop1", TMPL_FILE_EXT ) );
         engine.setProperty(RuntimeConstants.VM_LIBRARY, "vmlib1.vm");
     }
 

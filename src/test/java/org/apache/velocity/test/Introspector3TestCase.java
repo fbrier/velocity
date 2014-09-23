@@ -49,11 +49,12 @@ public class Introspector3TestCase extends BaseTestCase
         return new TestSuite(Introspector3TestCase.class);
     }
 
-    public void testSimple()
-        throws Exception
+    public void testSimple() throws Exception
     {
         Method method;
         String result;
+
+        RuntimeSingleton.init();
 
         MethodProvider mp = new MethodProvider();
 

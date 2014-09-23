@@ -19,12 +19,14 @@ package org.apache.velocity.test;
  * under the License.    
  */
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
-
 import junit.framework.TestSuite;
-
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 /**
  * Test suite for Templates.
@@ -46,15 +48,19 @@ public class TemplateTestSuite extends TestSuite implements TemplateTestBase
     {
         try
         {
-            Velocity.setProperty(
-                Velocity.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+            String loaderPath = calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH, "arithmetic", "vm" );
+            Velocity.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, loaderPath);
+            Velocity.setProperty( Velocity.CLASSPATH_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
+            Velocity.setProperty( RuntimeConstants.EVENTHANDLER_INCLUDE, "org.apache.velocity.app.event.implement.IncludeRelativePath" );
+            Velocity.setProperty( RuntimeConstants.RESOURCE_LOADER, "file,classpath" );
+            //RuntimeSingleton.init();
 
 //            Velocity.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
             Velocity.init();
 
             testProperties = new Properties();
-            testProperties.load(new FileInputStream(TEST_CASE_PROPERTIES));
+            testProperties.load(new FileInputStream( getFile(FILE_RESOURCE_LOADER_PATH, "templates", "properties")));
         }
         catch (Exception e)
         {
@@ -100,5 +106,71 @@ public class TemplateTestSuite extends TestSuite implements TemplateTestBase
     private static final String getTemplateTestKey(int nbr)
     {
         return ("test.template." + nbr);
+    }
+
+    protected String calcPathToTestDirectory( String path, String knownFile, String ext ) throws IOException
+    {
+        String file = getFile( path, knownFile, ext );
+        return  file.substring( 0, file.lastIndexOf( File.separator ) );
+
+    }
+
+    private String getFile( String path, String knownFile, String ext ) throws IOException
+    {
+        return getClass().getResource( getFileName( path, knownFile, ext) ).getFile();
+    }
+
+    /**
+     * Concatenates the file name parts together appropriately.
+     *
+     * @return The full path to the file.
+     */
+    protected String getFileName(final String dir, final String base, final String ext) throws IOException
+    {
+        return getFileName(dir, base, ext, false);
+    }
+
+    protected String getFileName(final String dir, final String base, final String ext, final boolean mustExist) throws IOException
+    {
+        StringBuffer buf = new StringBuffer();
+        File baseFile = new File(base);
+        if (dir != null)
+        {
+            if (!baseFile.isAbsolute())
+            {
+                baseFile = new File(dir, base);
+            }
+
+            buf.append(baseFile.getCanonicalPath());
+        }
+        else
+        {
+            buf.append(baseFile.getPath());
+        }
+
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(ext))
+        {
+            buf.append('.').append(ext);
+        }
+
+        if (mustExist)
+        {
+            File testFile = new File(buf.toString());
+//                File testFile = new File( this.getClass().getResource( buf.toString() ).getFile() );
+
+            if (!testFile.exists())
+            {
+                String msg = "getFileName() result " + testFile.getPath() + " does not exist!";
+                throw new FileNotFoundException( msg );
+            }
+
+            if (!testFile.isFile())
+            {
+                String msg = "getFileName() result " + testFile.getPath() + " is not a file!";
+                throw new FileNotFoundException( msg );
+            }
+        }
+
+        return buf.toString();
     }
 }
