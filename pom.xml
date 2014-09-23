@@ -4,7 +4,7 @@
   <groupId>org.apache</groupId>
   <artifactId>velocity</artifactId>
   <packaging>jar</packaging>
-  <version>1.7</version>
+  <version>1.8</version>
   <name>velocity</name>
 <!--
   <url>http://velocity.apache.org/engine/releases/velocity-1.5/index.html</url>
