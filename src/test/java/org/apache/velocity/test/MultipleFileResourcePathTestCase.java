@@ -64,34 +64,29 @@ public class MultipleFileResourcePathTestCase extends BaseTestCase
     private static final String COMPARE_DIR = "/multi/compare";
 
     VelocityEngine engine;
-    
+
     /**
      * Default constructor.
      */
-    public MultipleFileResourcePathTestCase(String name)
+    public MultipleFileResourcePathTestCase( String name )
     {
-        super(name);
+        super( name );
     }
 
-    public static Test suite ()
+    public static Test suite()
     {
-        return new TestSuite(MultipleFileResourcePathTestCase.class);
+        return new TestSuite( MultipleFileResourcePathTestCase.class );
     }
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
-        assureResultsDirectoryExists(RESULTS_DIR);
+        assureResultsDirectoryExists( RESULTS_DIR );
 
         engine = new VelocityEngine();
-        
-        engine.addProperty(
-                RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH1);
 
-        engine.addProperty(
-                RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH2);
-
-//        engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+        engine.addProperty( RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH1, "path1", TMPL_FILE_EXT ) );
+        engine.addProperty( RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH2, "path2", TMPL_FILE_EXT ) );
+//      engine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }
@@ -99,25 +94,16 @@ public class MultipleFileResourcePathTestCase extends BaseTestCase
     /**
      * Runs the test.
      */
-    public void  testMultipleFileResources ()
-            throws Exception
+    public void testMultipleFileResources() throws Exception
     {
-        Template template1 = engine.getTemplate(
-            getFileName(null, "path1", TMPL_FILE_EXT));
+        Template template1 = engine.getTemplate( getFileName( null, "path1", TMPL_FILE_EXT ) );
+        Template template2 = engine.getTemplate( getFileName( null, "path2", TMPL_FILE_EXT ) );
 
-        Template template2 = engine.getTemplate(
-            getFileName(null, "path2", TMPL_FILE_EXT));
+        FileOutputStream fos1 = new FileOutputStream( getFileName( RESULTS_DIR, "path1", RESULT_FILE_EXT ) );
+        FileOutputStream fos2 = new FileOutputStream( getFileName( RESULTS_DIR, "path2", RESULT_FILE_EXT ) );
 
-        FileOutputStream fos1 =
-            new FileOutputStream (
-                getFileName(RESULTS_DIR, "path1", RESULT_FILE_EXT));
-
-        FileOutputStream fos2 =
-            new FileOutputStream (
-                getFileName(RESULTS_DIR, "path2", RESULT_FILE_EXT));
-
-        Writer writer1 = new BufferedWriter(new OutputStreamWriter(fos1));
-        Writer writer2 = new BufferedWriter(new OutputStreamWriter(fos2));
+        Writer writer1 = new BufferedWriter( new OutputStreamWriter( fos1 ) );
+        Writer writer2 = new BufferedWriter( new OutputStreamWriter( fos2 ) );
 
         /*
          *  put the Vector into the context, and merge both
@@ -125,20 +111,18 @@ public class MultipleFileResourcePathTestCase extends BaseTestCase
 
         VelocityContext context = new VelocityContext();
 
-        template1.merge(context, writer1);
+        template1.merge( context, writer1 );
         writer1.flush();
         writer1.close();
 
-        template2.merge(context, writer2);
+        template2.merge( context, writer2 );
         writer2.flush();
         writer2.close();
 
-        if (!isMatch(RESULTS_DIR, COMPARE_DIR, "path1",
-                RESULT_FILE_EXT, CMP_FILE_EXT) ||
-            !isMatch(RESULTS_DIR, COMPARE_DIR, "path2",
-                RESULT_FILE_EXT, CMP_FILE_EXT))
+        if ( !isMatch( RESULTS_DIR, COMPARE_DIR, "path1", RESULT_FILE_EXT, CMP_FILE_EXT ) ||
+                !isMatch( RESULTS_DIR, COMPARE_DIR, "path2", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output incorrect.");
+            fail( "Output incorrect." );
         }
     }
 }

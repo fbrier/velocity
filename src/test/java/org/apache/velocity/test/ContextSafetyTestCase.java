@@ -53,14 +53,10 @@ public class ContextSafetyTestCase extends BaseTestCase implements TemplateTestB
         super(name);
     }
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
-        Velocity.setProperty(
-                Velocity.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
-
-//        Velocity.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-
+        Velocity.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH, "context_safety", TMPL_FILE_EXT ));
+//      Velocity.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         Velocity.init();
     }
 
@@ -72,8 +68,7 @@ public class ContextSafetyTestCase extends BaseTestCase implements TemplateTestB
     /**
      * Runs the test.
      */
-    public void testContextSafety ()
-        throws Exception
+    public void testContextSafety () throws Exception
     {
         /*
          *  make a Vector and String array because
@@ -99,16 +94,10 @@ public class ContextSafetyTestCase extends BaseTestCase implements TemplateTestB
          *  get the template and the output
          */
 
-        Template template = RuntimeSingleton.getTemplate(
-            getFileName(null, "context_safety", TMPL_FILE_EXT));
+        Template template = RuntimeSingleton.getTemplate( getFileName(null, "context_safety", TMPL_FILE_EXT));
 
-        FileOutputStream fos1 =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "context_safety1", RESULT_FILE_EXT));
-
-        FileOutputStream fos2 =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "context_safety2", RESULT_FILE_EXT));
+        FileOutputStream fos1 = new FileOutputStream ( getFileName( RESULT_DIR, "context_safety1", RESULT_FILE_EXT));
+        FileOutputStream fos2 = new FileOutputStream ( getFileName( RESULT_DIR, "context_safety2", RESULT_FILE_EXT));
 
         Writer writer1 = new BufferedWriter(new OutputStreamWriter(fos1));
         Writer writer2 = new BufferedWriter(new OutputStreamWriter(fos2));
@@ -131,10 +120,8 @@ public class ContextSafetyTestCase extends BaseTestCase implements TemplateTestB
         writer2.flush();
         writer2.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,"context_safety1",
-                RESULT_FILE_EXT,CMP_FILE_EXT) ||
-            !isMatch(RESULT_DIR,COMPARE_DIR,"context_safety2",
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if (!isMatch(RESULT_DIR,COMPARE_DIR,"context_safety1", RESULT_FILE_EXT,CMP_FILE_EXT) ||
+            !isMatch(RESULT_DIR,COMPARE_DIR,"context_safety2", RESULT_FILE_EXT,CMP_FILE_EXT))
         {
             fail("Output incorrect.");
         }

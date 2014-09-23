@@ -42,64 +42,51 @@ import org.apache.velocity.runtime.RuntimeConstants;
 public class InlineScopeVMTestCase extends BaseTestCase implements TemplateTestBase
 {
     VelocityEngine engine;
-    public InlineScopeVMTestCase(String name)
+
+    public InlineScopeVMTestCase( String name )
     {
-        super(name);
+        super( name );
     }
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
         engine = new VelocityEngine();
-        
-        engine.setProperty(
-                RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
 
-        engine.setProperty(
-                RuntimeConstants.VM_PERM_INLINE_LOCAL, "true");
-
-        engine.setProperty(
-                RuntimeConstants.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
-        
-//        engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+        engine.setProperty( RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true" );
+        engine.setProperty( RuntimeConstants.VM_PERM_INLINE_LOCAL, "true" );
+        engine.setProperty( RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH, "vm_test2", TMPL_FILE_EXT ) );
+//      engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         engine.init();
     }
 
-    public static Test suite ()
+    public static Test suite()
     {
-        return new TestSuite(InlineScopeVMTestCase.class);
+        return new TestSuite( InlineScopeVMTestCase.class );
     }
 
     /**
      * Runs the test.
      */
-    public void testInlineScopeVM ()
-            throws Exception
+    public void testInlineScopeVM() throws Exception
     {
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
         /*
          * Get the template and the output. Do them backwards.
          * vm_test2 uses a local VM and vm_test1 doesn't
          */
 
-        Template template2 = engine.getTemplate(
-            getFileName(null, "vm_test2", TMPL_FILE_EXT));
+        Template template2 = engine.getTemplate( getFileName( null, "vm_test2", TMPL_FILE_EXT ) );
 
-        Template template1 = engine.getTemplate(
-            getFileName(null, "vm_test1", TMPL_FILE_EXT));
+        Template template1 = engine.getTemplate( getFileName( null, "vm_test1", TMPL_FILE_EXT ) );
 
-        FileOutputStream fos1 =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "vm_test1", RESULT_FILE_EXT));
+        FileOutputStream fos1 = new FileOutputStream( getFileName( RESULT_DIR, "vm_test1", RESULT_FILE_EXT ) );
 
-        FileOutputStream fos2 =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "vm_test2", RESULT_FILE_EXT));
+        FileOutputStream fos2 = new FileOutputStream( getFileName( RESULT_DIR, "vm_test2", RESULT_FILE_EXT ) );
 
-        Writer writer1 = new BufferedWriter(new OutputStreamWriter(fos1));
-        Writer writer2 = new BufferedWriter(new OutputStreamWriter(fos2));
+        Writer writer1 = new BufferedWriter( new OutputStreamWriter( fos1 ) );
+        Writer writer2 = new BufferedWriter( new OutputStreamWriter( fos2 ) );
 
         /*
          *  put the Vector into the context, and merge both
@@ -107,20 +94,18 @@ public class InlineScopeVMTestCase extends BaseTestCase implements TemplateTestB
 
         VelocityContext context = new VelocityContext();
 
-        template1.merge(context, writer1);
+        template1.merge( context, writer1 );
         writer1.flush();
         writer1.close();
 
-        template2.merge(context, writer2);
+        template2.merge( context, writer2 );
         writer2.flush();
         writer2.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,"vm_test1",
-                RESULT_FILE_EXT,CMP_FILE_EXT) ||
-            !isMatch(RESULT_DIR,COMPARE_DIR,"vm_test2",
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "vm_test1", RESULT_FILE_EXT, CMP_FILE_EXT ) ||
+                !isMatch( RESULT_DIR, COMPARE_DIR, "vm_test2", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output incorrect.");
+            fail( "Output incorrect." );
         }
     }
 }

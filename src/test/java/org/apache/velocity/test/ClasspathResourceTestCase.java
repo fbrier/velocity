@@ -41,7 +41,7 @@ import org.apache.velocity.runtime.RuntimeSingleton;
  */
 public class ClasspathResourceTestCase extends BaseTestCase
 {
-     /**
+    /**
      * VTL file extension.
      */
     private static final String TMPL_FILE_EXT = "vm";
@@ -69,71 +69,57 @@ public class ClasspathResourceTestCase extends BaseTestCase
     /**
      * Default constructor.
      */
-    public ClasspathResourceTestCase(String name)
+    public ClasspathResourceTestCase( String name )
     {
-        super(name);
+        super( name );
     }
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
-        assureResultsDirectoryExists(RESULTS_DIR);
+        assureResultsDirectoryExists( RESULTS_DIR );
 
-        Velocity.setProperty(Velocity.RESOURCE_LOADER, "classpath");
+        Velocity.setProperty( Velocity.RESOURCE_LOADER, "classpath" );
 
         /*
-         * I don't think I should have to do this, these should
-         * be in the default config file.
+         * I don't think I should have to do this, these should be in the default config file.
          */
-
-        Velocity.addProperty(
-                "classpath." + Velocity.RESOURCE_LOADER + ".class",
-                "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-
-        Velocity.setProperty(
-                "classpath." + Velocity.RESOURCE_LOADER + ".cache", "false");
-
-        Velocity.setProperty(
-                "classpath." + Velocity.RESOURCE_LOADER + ".modificationCheckInterval",
-                "2");
-
-//        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+        Velocity.addProperty( "classpath." + Velocity.RESOURCE_LOADER + ".class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+        Velocity.setProperty( "classpath." + Velocity.RESOURCE_LOADER + ".cache", "false" );
+        Velocity.setProperty( "classpath." + Velocity.RESOURCE_LOADER + ".modificationCheckInterval", "2" );
+//      Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
 
         Velocity.init();
     }
 
-    public static Test suite ()
+    public static Test suite()
     {
-        return new TestSuite(ClasspathResourceTestCase.class);
+        return new TestSuite( ClasspathResourceTestCase.class );
     }
 
     /**
      * Runs the test.
      */
-    public void testClasspathResource ()
-            throws Exception
+    public void testClasspathResource() throws Exception
     {
         /*
          *  lets ensure the results directory exists
          */
-        assureResultsDirectoryExists(RESULTS_DIR);
+        assureResultsDirectoryExists( RESULTS_DIR );
 
-        Template template1 = RuntimeSingleton.getTemplate("template/test1." + TMPL_FILE_EXT);
+        Template template1 = RuntimeSingleton.getTemplate( "template/test1." + TMPL_FILE_EXT );
 
         // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
         //            Template template2 = RuntimeSingleton.getTemplate(
         //                getFileName(null, "template/test2", TMPL_FILE_EXT));
 
-        FileOutputStream fos1 =
-            new FileOutputStream (
-                getFileName(RESULTS_DIR, "test1", RESULT_FILE_EXT));
+        FileOutputStream fos1 = new FileOutputStream( getFileName( RESULTS_DIR, "test1", RESULT_FILE_EXT ) );
 
         // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
         //            FileOutputStream fos2 =
         //                new FileOutputStream (
         //                    getFileName(RESULTS_DIR, "test2", RESULT_FILE_EXT));
 
-        Writer writer1 = new BufferedWriter(new OutputStreamWriter(fos1));
+        Writer writer1 = new BufferedWriter( new OutputStreamWriter( fos1 ) );
         // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
         //            Writer writer2 = new BufferedWriter(new OutputStreamWriter(fos2));
 
@@ -143,7 +129,7 @@ public class ClasspathResourceTestCase extends BaseTestCase
 
         VelocityContext context = new VelocityContext();
 
-        template1.merge(context, writer1);
+        template1.merge( context, writer1 );
         writer1.flush();
         writer1.close();
 
@@ -152,12 +138,12 @@ public class ClasspathResourceTestCase extends BaseTestCase
         //            writer2.flush();
         //            writer2.close();
 
-        if (!isMatch(RESULTS_DIR,COMPARE_DIR,"test1",RESULT_FILE_EXT,CMP_FILE_EXT)
-                // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
-                //                || !isMatch(RESULTS_DIR,COMPARE_DIR,"test2",RESULT_FILE_EXT,CMP_FILE_EXT)
-            )
+        if ( !isMatch( RESULTS_DIR, COMPARE_DIR, "test1", RESULT_FILE_EXT, CMP_FILE_EXT )
+            // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
+            //                || !isMatch(RESULTS_DIR,COMPARE_DIR,"test2",RESULT_FILE_EXT,CMP_FILE_EXT)
+                )
         {
-            fail("Output is incorrect!");
+            fail( "Output is incorrect!" );
         }
     }
 }
