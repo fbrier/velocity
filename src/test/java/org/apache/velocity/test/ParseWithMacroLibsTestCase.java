@@ -37,9 +37,9 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
 
     private static final String COMPARE_DIR = "/parsemacros/compare";
 
-    public ParseWithMacroLibsTestCase(String name)
+    public ParseWithMacroLibsTestCase( String name )
     {
-        super(name);
+        super( name );
     }
 
     public void setUp()
@@ -50,101 +50,98 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
 
     /**
      * Test suite
+     *
      * @return test suite
      */
     public static junit.framework.Test suite()
     {
-        return new TestSuite(ParseWithMacroLibsTestCase.class);
+        return new TestSuite( ParseWithMacroLibsTestCase.class );
     }
-    
-    public void testParseMacroLocalCacheOn()
-    throws Exception
+
+    public void testParseMacroLocalCacheOn() throws Exception
     {
         /*
          *  local scope, cache on
          */
-        VelocityEngine ve = createEngine(true, true);
+        VelocityEngine ve = createEngine( true, true );
 
         // render twice to make sure there is no difference with cached templates
-        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_1", false);
-        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_1", false);
-        
+        testParseMacro( ve, "vm_library1.vm", "parseMacro1_1", false );
+        testParseMacro( ve, "vm_library1.vm", "parseMacro1_1", false );
+
         // run again with different macro library
-        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_1b", false);
-        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_1b", false);
+        testParseMacro( ve, "vm_library2.vm", "parseMacro1_1b", false );
+        testParseMacro( ve, "vm_library2.vm", "parseMacro1_1b", false );
     }
 
     /**
      * Runs the tests with global namespace.
      */
-    public void testParseMacroLocalCacheOff()
-    throws Exception
+    public void testParseMacroLocalCacheOff() throws Exception
     {
         /*
          *  local scope, cache off
          */
-        VelocityEngine ve = createEngine(false, true);
+        VelocityEngine ve = createEngine( false, true );
 
-        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_2", true);
+        testParseMacro( ve, "vm_library1.vm", "parseMacro1_2", true );
 
         // run again with different macro library
-        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_2b", true);
+        testParseMacro( ve, "vm_library2.vm", "parseMacro1_2b", true );
     }
 
-    public void testParseMacroGlobalCacheOn()
-    throws Exception
+    public void testParseMacroGlobalCacheOn() throws Exception
     {
         /*
          *  global scope, cache on
          */
-        VelocityEngine ve = createEngine(true, false);
+        VelocityEngine ve = createEngine( true, false );
 
         // render twice to make sure there is no difference with cached templates
-        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_3", false);
-        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_3", false);
+        testParseMacro( ve, "vm_library1.vm", "parseMacro1_3", false );
+        testParseMacro( ve, "vm_library1.vm", "parseMacro1_3", false );
 
         // run again with different macro library
-        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_3b", false);
-        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_3b", false);
+        testParseMacro( ve, "vm_library2.vm", "parseMacro1_3b", false );
+        testParseMacro( ve, "vm_library2.vm", "parseMacro1_3b", false );
     }
-    
-    public void testParseMacroGlobalCacheOff()
-    throws Exception
+
+    public void testParseMacroGlobalCacheOff() throws Exception
     {
         /*
          *  global scope, cache off
          */
-        VelocityEngine ve = createEngine(false, false);
+        VelocityEngine ve = createEngine( false, false );
 
-        testParseMacro(ve, "/parsemacros/vm_library1.vm", "parseMacro1_4", true);
-        
+        testParseMacro( ve, "vm_library1.vm", "parseMacro1_4", true );
+
         // run again with different macro library
-        testParseMacro(ve, "/parsemacros/vm_library2.vm", "parseMacro1_4b", true);
+        testParseMacro( ve, "vm_library2.vm", "parseMacro1_4b", true );
 
     }
-    
+
     /**
      * Test #parse with macros.  Can be used to test different engine configurations
+     *
      * @param ve
      * @param outputBaseFileName
      * @param testCachingOff
      * @throws Exception
      */
-    private void testParseMacro(VelocityEngine ve, String includeFile, String outputBaseFileName, boolean testCachingOff)
+    private void testParseMacro( VelocityEngine ve, String includeFile, String outputBaseFileName, boolean testCachingOff )
             throws Exception
     {
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
-        FileOutputStream fos = new FileOutputStream (getFileName(
-                RESULT_DIR, outputBaseFileName, RESULT_FILE_EXT));
+        FileOutputStream fos = new FileOutputStream( getFileName( RESULT_DIR, outputBaseFileName, RESULT_FILE_EXT ) );
 
         VelocityContext context = new VelocityContext();
-        context.put("includefile", includeFile);
+        context.put( "includefile", includeFile );
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos ) );
 
-        Template template = ve.getTemplate("/parsemacros/parseMacro1.vm");
-        template.merge(context, writer);
+        Template template = ve.getTemplate( "parseMacro1.vm" );
+        template.merge( context, writer );
 
         /**
          * Write to the file
@@ -152,87 +149,82 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR, COMPARE_DIR, outputBaseFileName,
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, outputBaseFileName, RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            String result = getFileContents(RESULT_DIR, outputBaseFileName, RESULT_FILE_EXT);
-            String compare = getFileContents(COMPARE_DIR, outputBaseFileName, CMP_FILE_EXT);
+            String result = getFileContents( RESULT_DIR, outputBaseFileName, RESULT_FILE_EXT );
+            String compare = getFileContents( COMPARE_DIR, outputBaseFileName, CMP_FILE_EXT );
 
-            String msg = "Processed template did not match expected output\n"+
-                "-----Result-----\n"+ result +
-                "----Expected----\n"+ compare +
-                "----------------";
-            
-            fail(msg);
+            String msg = "Processed template did not match expected output\n" +
+                    "-----Result-----\n" + result +
+                    "----Expected----\n" + compare +
+                    "----------------";
+
+            fail( msg );
         }
 
         /*
          * Show that caching is turned off
          */
-        if (testCachingOff)
+        if ( testCachingOff )
         {
-            Template t1 = ve.getTemplate("/parsemacros/parseMacro1.vm");
-            Template t2 = ve.getTemplate("/parsemacros/parseMacro1.vm");
+            Template t1 = ve.getTemplate( "parseMacro1.vm" );
+            Template t2 = ve.getTemplate( "parseMacro1.vm" );
 
-            assertNotSame("Different objects", t1, t2);
+            assertNotSame( "Different objects", t1, t2 );
         }
     }
 
     /**
      * Return and initialize engine
+     *
      * @return
      */
-    private VelocityEngine createEngine(boolean cache, boolean local)
-    throws Exception
+    private VelocityEngine createEngine( boolean cache, boolean local ) throws Exception
     {
         VelocityEngine ve = new VelocityEngine();
-        ve.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
-        ve.setProperty("velocimacro.permissions.allow.inline.to.replace.global",
-                new Boolean(local));
-        ve.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, new Boolean(cache));
-//        ve.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
-//        ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
+        ve.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE );
+        ve.setProperty( "velocimacro.permissions.allow.inline.to.replace.global", new Boolean( local ) );
+        ve.setProperty( RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, new Boolean( cache ) );
+//      ve.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+        ve.setProperty( RuntimeConstants.RESOURCE_LOADER, "file,classpath" );
+      ve.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( "/parsemacros", "parseMacro3", TMPL_FILE_EXT ));
         ve.init();
-        
+
         return ve;
     }
-    
-    
+
+
     /**
      * Test whether the literal text is given if a definition cannot be
      * found for a macro.
      *
      * @throws Exception
      */
-    public void testParseMacrosWithNoDefinition()
-            throws Exception
+    public void testParseMacrosWithNoDefinition() throws Exception
     {
         /*
          *  ve1: local scope, cache on
          */
         VelocityEngine ve1 = new VelocityEngine();
-        
-        ve1.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
-        ve1.setProperty("velocimacro.permissions.allow.inline.to.replace.global",
-                Boolean.FALSE);
-        ve1.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE);
-//        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
-//        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
-        ve1.init();
-        
-        assureResultsDirectoryExists(RESULT_DIR);
 
-        FileOutputStream fos = new FileOutputStream (getFileName(
-                RESULT_DIR, "parseMacro2", RESULT_FILE_EXT));
+        ve1.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE );
+        ve1.setProperty( "velocimacro.permissions.allow.inline.to.replace.global", Boolean.FALSE );
+        ve1.setProperty( RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE );
+//        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+        ve1.setProperty( RuntimeConstants.RESOURCE_LOADER, "file,classpath" );
+        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( "/parsemacros", "parseMacro3", TMPL_FILE_EXT ));
+        ve1.init();
+
+        assureResultsDirectoryExists( RESULT_DIR );
+
+        FileOutputStream fos = new FileOutputStream( getFileName( RESULT_DIR, "parseMacro2", RESULT_FILE_EXT ) );
 
         VelocityContext context = new VelocityContext();
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos ) );
 
-        Template template = ve1.getTemplate("/parsemacros/parseMacro2.vm");
-        template.merge(context, writer);
+        Template template = ve1.getTemplate( "parseMacro2.vm" );
+        template.merge( context, writer );
 
         /**
          * Write to the file
@@ -240,10 +232,9 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR, COMPARE_DIR, "parseMacro2",
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "parseMacro2", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Processed template did not match expected output");
+            fail( "Processed template did not match expected output" );
         }
     }
 
@@ -253,34 +244,31 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
      *
      * @throws Exception
      */
-    public void testDuplicateDefinitions()
-            throws Exception
+    public void testDuplicateDefinitions() throws Exception
     {
         /*
          *  ve1: local scope, cache on
          */
         VelocityEngine ve1 = new VelocityEngine();
-        
-        ve1.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE);
-        ve1.setProperty("velocimacro.permissions.allow.inline.to.replace.global",
-                Boolean.FALSE);
-        ve1.setProperty(RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE);
-//        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-        ve1.setProperty(RuntimeConstants.RESOURCE_LOADER, "file,classpath");
-//        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "/parsemacros");
-        ve1.init();
-        
-        assureResultsDirectoryExists(RESULT_DIR);
 
-        FileOutputStream fos = new FileOutputStream (getFileName(
-                RESULT_DIR, "parseMacro3", RESULT_FILE_EXT));
+        ve1.setProperty( Velocity.VM_PERM_INLINE_LOCAL, Boolean.TRUE );
+        ve1.setProperty( "velocimacro.permissions.allow.inline.to.replace.global", Boolean.FALSE );
+        ve1.setProperty( RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, Boolean.TRUE );
+//        ve1.setProperty( Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
+        ve1.setProperty( RuntimeConstants.RESOURCE_LOADER, "file,classpath" );
+        ve1.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( "/parsemacros", "parseMacro3", TMPL_FILE_EXT ));
+        ve1.init();
+
+        assureResultsDirectoryExists( RESULT_DIR );
+
+        FileOutputStream fos = new FileOutputStream( getFileName( RESULT_DIR, "parseMacro3", RESULT_FILE_EXT ) );
 
         VelocityContext context = new VelocityContext();
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos));
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos ) );
 
-        Template template = ve1.getTemplate("/parsemacros/parseMacro3.vm");
-        template.merge(context, writer);
+        Template template = ve1.getTemplate( "parseMacro3.vm" );
+        template.merge( context, writer );
 
         /**
          * Write to the file
@@ -288,10 +276,9 @@ public class ParseWithMacroLibsTestCase extends BaseTestCase
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR, COMPARE_DIR, "parseMacro3",
-                RESULT_FILE_EXT,CMP_FILE_EXT))
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "parseMacro3", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Processed template did not match expected output");
+            fail( "Processed template did not match expected output" );
         }
     }
 

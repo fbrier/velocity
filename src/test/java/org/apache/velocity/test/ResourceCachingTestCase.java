@@ -42,7 +42,7 @@ public class ResourceCachingTestCase extends BaseTestCase
      * Path for templates. This property will override the
      * value in the default velocity properties file.
      */
-    private final static String FILE_RESOURCE_LOADER_PATH = "test/resourcecaching";
+    private final static String FILE_RESOURCE_LOADER_PATH = "/resourcecaching";
 
 
     /**
@@ -53,8 +53,7 @@ public class ResourceCachingTestCase extends BaseTestCase
         super(name);
     }
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
 
     }
@@ -69,14 +68,13 @@ public class ResourceCachingTestCase extends BaseTestCase
      * of the same file throws ClassCastException when caching is on.
      * @throws Exception
      */
-    public void testIncludeParseCaching ()
-            throws Exception
+    public void testIncludeParseCaching () throws Exception
     {
 
         VelocityEngine ve = new VelocityEngine();
 
         ve.setProperty( RuntimeConstants.CLASSPATH_RESOURCE_LOADER_CACHE, "true");
-        ve.setProperty("file.resource.loader.path", FILE_RESOURCE_LOADER_PATH);
+        ve.setProperty("file.resource.loader.path", calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH, "testincludeparse", TMPL_FILE_EXT ));
         ve.init();
 
         Template template = ve.getTemplate("testincludeparse.vm");
