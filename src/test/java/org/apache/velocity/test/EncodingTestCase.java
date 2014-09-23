@@ -34,47 +34,40 @@ import org.apache.velocity.app.Velocity;
 /**
  * Tests input encoding handling.  The input target is UTF-8, having
  * chinese and and a spanish enyay (n-twiddle)
- *
- *  Thanks to Kent Johnson for the example input file.
- *
+ * <p/>
+ * Thanks to Kent Johnson for the example input file.
  *
  * @author <a href="mailto:geirm@optonline.net">Geir Magnusson Jr.</a>
  * @version $Id: EncodingTestCase.java 704299 2008-10-14 03:13:16Z nbubna $
  */
 public class EncodingTestCase extends BaseTestCase implements TemplateTestBase
 {
-    public EncodingTestCase(String name)
+    public EncodingTestCase( String name )
     {
-        super(name);
+        super( name );
     }
 
-    public void setUp()
-            throws Exception
+    public void setUp() throws Exception
     {
-        Velocity.setProperty(
-                Velocity.FILE_RESOURCE_LOADER_PATH, FILE_RESOURCE_LOADER_PATH);
-
+        Velocity.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH, calcPathToTestDirectory( FILE_RESOURCE_LOADER_PATH, "encodingtest", TMPL_FILE_EXT ) );
         Velocity.setProperty( Velocity.INPUT_ENCODING, "UTF-8" );
-
-//        Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
-
+//      Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, TestLogChute.class.getName());
         Velocity.init();
     }
 
     public static Test suite()
     {
-        return new TestSuite(EncodingTestCase.class);
+        return new TestSuite( EncodingTestCase.class );
     }
 
     /**
      * Runs the test.
      */
-    public void testChineseEncoding ()
-            throws Exception
+    public void testChineseEncoding() throws Exception
     {
         VelocityContext context = new VelocityContext();
 
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
         /*
          *  get the template and the output
@@ -84,117 +77,93 @@ public class EncodingTestCase extends BaseTestCase implements TemplateTestBase
          *  Chinese and spanish
          */
 
-        Template template = Velocity.getTemplate(
-            getFileName(null, "encodingtest", TMPL_FILE_EXT), "UTF-8");
+        Template template = Velocity.getTemplate( getFileName( null, "encodingtest", TMPL_FILE_EXT ), "UTF-8" );
 
         FileOutputStream fos =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "encodingtest", RESULT_FILE_EXT));
+                new FileOutputStream( getFileName( RESULT_DIR, "encodingtest", RESULT_FILE_EXT ) );
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos, "UTF-8" ) );
 
-        template.merge(context, writer);
+        template.merge( context, writer );
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,"encodingtest",
-                RESULT_FILE_EXT,CMP_FILE_EXT) )
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "encodingtest", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output 1 incorrect.");
+            fail( "Output 1 incorrect." );
         }
     }
 
-    public void testHighByteChinese()
-            throws Exception
+    public void testHighByteChinese() throws Exception
     {
         VelocityContext context = new VelocityContext();
-
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
         /*
          *  a 'high-byte' chinese example from Michael Zhou
          */
+        Template template = Velocity.getTemplate( getFileName( null, "encodingtest2", TMPL_FILE_EXT ), "UTF-8" );
 
-        Template template = Velocity.getTemplate(
-              getFileName( null, "encodingtest2", TMPL_FILE_EXT), "UTF-8");
+        FileOutputStream fos = new FileOutputStream( getFileName( RESULT_DIR, "encodingtest2", RESULT_FILE_EXT ) );
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos, "UTF-8" ) );
 
-        FileOutputStream fos =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "encodingtest2", RESULT_FILE_EXT));
-
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
-
-        template.merge(context, writer);
+        template.merge( context, writer );
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,"encodingtest2",
-                RESULT_FILE_EXT,CMP_FILE_EXT) )
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "encodingtest2", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output 2 incorrect.");
+            fail( "Output 2 incorrect." );
         }
 
     }
 
-    public void testHighByteChinese2()
-            throws Exception
+    public void testHighByteChinese2() throws Exception
     {
         VelocityContext context = new VelocityContext();
 
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
         /*
          *  a 'high-byte' chinese from Ilkka
          */
 
-        Template template = Velocity.getTemplate(
-              getFileName( null, "encodingtest3", TMPL_FILE_EXT), "GBK");
+        Template template = Velocity.getTemplate( getFileName( null, "encodingtest3", TMPL_FILE_EXT ), "GBK" );
 
-        FileOutputStream fos =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "encodingtest3", RESULT_FILE_EXT));
+        FileOutputStream fos = new FileOutputStream( getFileName( RESULT_DIR, "encodingtest3", RESULT_FILE_EXT ) );
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos, "GBK" ) );
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "GBK"));
-
-        template.merge(context, writer);
+        template.merge( context, writer );
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,"encodingtest3",
-                RESULT_FILE_EXT,CMP_FILE_EXT) )
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "encodingtest3", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output 3 incorrect.");
+            fail( "Output 3 incorrect." );
         }
     }
 
-    public void testRussian()
-            throws Exception
+    public void testRussian() throws Exception
     {
         VelocityContext context = new VelocityContext();
 
-        assureResultsDirectoryExists(RESULT_DIR);
+        assureResultsDirectoryExists( RESULT_DIR );
 
         /*
          *  Russian example from Vitaly Repetenko
          */
+        Template template = Velocity.getTemplate( getFileName( null, "encodingtest_KOI8-R", TMPL_FILE_EXT ), "KOI8-R" );
 
-        Template template = Velocity.getTemplate(
-              getFileName( null, "encodingtest_KOI8-R", TMPL_FILE_EXT), "KOI8-R");
+        FileOutputStream fos = new FileOutputStream( getFileName( RESULT_DIR, "encodingtest_KOI8-R", RESULT_FILE_EXT ) );
+        Writer writer = new BufferedWriter( new OutputStreamWriter( fos, "KOI8-R" ) );
 
-        FileOutputStream fos =
-            new FileOutputStream (
-                getFileName(RESULT_DIR, "encodingtest_KOI8-R", RESULT_FILE_EXT));
-
-        Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "KOI8-R"));
-
-        template.merge(context, writer);
+        template.merge( context, writer );
         writer.flush();
         writer.close();
 
-        if (!isMatch(RESULT_DIR,COMPARE_DIR,"encodingtest_KOI8-R",
-                RESULT_FILE_EXT,CMP_FILE_EXT) )
+        if ( !isMatch( RESULT_DIR, COMPARE_DIR, "encodingtest_KOI8-R", RESULT_FILE_EXT, CMP_FILE_EXT ) )
         {
-            fail("Output 4 incorrect.");
+            fail( "Output 4 incorrect." );
         }
     }
 }

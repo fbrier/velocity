@@ -354,7 +354,8 @@ public class StringUtils
      */
     public static String fileContentsToString(String file)
     {
-        String contents = "";
+        StringBuffer contents = new StringBuffer();
+        char[] buf = new char[500];
 
         File f = null;
         try
@@ -367,9 +368,14 @@ public class StringUtils
                 try
                 {
                     fr = new FileReader(f);
-                    char[] template = new char[(int) f.length()];
-                    fr.read(template);
-                    contents = new String(template);
+                    int numCharsRead;
+                    do
+                    {
+                        numCharsRead = fr.read( buf, 0, 500 );
+                        if ( numCharsRead > 0 )
+                            contents.append( buf, 0, numCharsRead );
+                    }
+                    while ( -1 != numCharsRead );
                 }
                 catch (Exception e)
                 {
@@ -388,7 +394,7 @@ public class StringUtils
         {
             e.printStackTrace();
         }
-        return contents;
+        return contents.toString();
     }
 
     /**
