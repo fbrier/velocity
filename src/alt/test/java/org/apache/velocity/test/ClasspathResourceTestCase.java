@@ -109,15 +109,12 @@ public class ClasspathResourceTestCase extends BaseTestCase
         Template template1 = RuntimeSingleton.getTemplate( "template/test1." + TMPL_FILE_EXT );
 
         // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
-        //            Template template2 = RuntimeSingleton.getTemplate(
-        //                getFileName(null, "template/test2", TMPL_FILE_EXT));
+        //            Template template2 = RuntimeSingleton.getTemplate( getFileName( null, "template/test2", TMPL_FILE_EXT ) );
 
         FileOutputStream fos1 = new FileOutputStream( getFileName( RESULTS_DIR, "test1", RESULT_FILE_EXT ) );
 
         // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
-        //            FileOutputStream fos2 =
-        //                new FileOutputStream (
-        //                    getFileName(RESULTS_DIR, "test2", RESULT_FILE_EXT));
+        //            FileOutputStream fos2 = new FileOutputStream ( getFileName( RESULTS_DIR, "test2", RESULT_FILE_EXT ) );
 
         Writer writer1 = new BufferedWriter( new OutputStreamWriter( fos1 ) );
         // Uncomment when http://jira.codehaus.org/browse/MPTEST-57 has been resolved
