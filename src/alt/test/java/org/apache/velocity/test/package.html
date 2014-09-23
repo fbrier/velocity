@@ -1,0 +1,6 @@
+<html>
+<body>
+<h1>SecureIntrospectionTestCase.java</h1>
+The Secure Uber classes looks like they were never finished.  The test and code is broken.  In UberspectImpl.init(), an Introspector instance is created and assigned to the introspector class data member, but in SecureUberspector.getIterator() it then throws a ClassCastException because Introspector does not implement SecureIntrospectorControl.  This code never would have worked and now that the unit test is being run, the test is failing.
+</body>
+</html>

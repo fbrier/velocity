@@ -68,7 +68,9 @@ public class UberspectImpl implements Uberspect
     public void init(RuntimeInstance ri)
     {
         this.ri = ri;
+        // ToDo: This makes no sense since SecureUberspector.getIterator() throws a ClassCastException because Introspector does not implement SecureIntrospectorControl
         introspector = new Introspector(ri);
+        // introspector = new SecureIntrospectorImpl(ri, null, null);
     }
 
     /**
